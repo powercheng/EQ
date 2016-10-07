@@ -11,15 +11,16 @@ public class MainActivity extends AppCompatActivity {
     //1223345678
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+
         Parse.initialize(new Parse.Configuration.Builder(this)
-                .applicationId("Your Back4app application ID")
-                .clientKey("You can found it on b4a core setting")
+                .applicationId("5mUU6pV0Ljoc3Er2ZrJoUUBC93kBeEfuvu2vkIUw")
+                .clientKey("0vj8zObedfUjbtTc92cX8TIR2ccEEhlIdgfvf5BG")
                 .server("https://parseapi.back4app.com/").build()
         );
-        ParseObject testObject = new ParseObject("TestObject");
-        testObject.put("foo", "bar");
-        testObject.saveInBackground();
+//        ParseObject testObject = new ParseObject("Event");
+//        testObject.put("title", "bar");
+//        testObject.saveInBackground();
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
 
