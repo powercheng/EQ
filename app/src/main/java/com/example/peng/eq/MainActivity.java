@@ -1,14 +1,16 @@
 package com.example.peng.eq;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+
 import com.parse.Parse;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 
 public class MainActivity extends AppCompatActivity {
-    //1223345678
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -24,5 +26,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
-    //testing 161006....
+    public void login(View view) {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
+
+    public void signup() {
+
+    }
 }
