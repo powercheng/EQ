@@ -22,6 +22,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -203,6 +204,7 @@ public class SignupActivity extends AppCompatActivity implements LoaderCallbacks
 
             user.signUpInBackground(new SignUpCallback() {
                 public void done(ParseException e) {
+                    Log.i("sttttt","aaaaa");
                     if (e == null) {
                         // Hooray! Let them use the app now.
                         //go to profile/map screen
@@ -212,7 +214,8 @@ public class SignupActivity extends AppCompatActivity implements LoaderCallbacks
                     } else {
                         // Sign up didn't succeed. Look at the ParseException
                         // to figure out what went wrong
-                        showDialog(e.toString(), "Please try again!");
+                       // showDialog(e.toString(), "Please try again!");
+                        Dialog.showDialog("aaaaccaaa","aavvvaaaa",SignupActivity.this);
                         showProgress(false);
                     }
                 }
@@ -382,6 +385,7 @@ public class SignupActivity extends AppCompatActivity implements LoaderCallbacks
 
 
     //Cizhen 161008
+/*
     private void showDialog(String title, String message){
         //show alert meesage.
         AlertDialog alertDialog = new AlertDialog.Builder(SignupActivity.this).create();
@@ -396,6 +400,7 @@ public class SignupActivity extends AppCompatActivity implements LoaderCallbacks
         alertDialog.show();
 
     }
+*/
 
     @Override
     public void onBackPressed() {
