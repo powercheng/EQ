@@ -8,6 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:theme="@style/AppTheme"
     tools:context="com.example.peng.eq.LoginActivity">
 
     <!-- Login progress -->
@@ -77,7 +78,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="0dp"
-                android:layout_marginTop="280dp"
+                android:layout_marginTop="50dp"
                 android:text="@string/action_sign_in"
                 android:textStyle="bold"
                 android:shadowRadius="100"
