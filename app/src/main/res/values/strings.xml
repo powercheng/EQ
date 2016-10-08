@@ -18,4 +18,6 @@
     </string>
 
     <string name="forget_password">Forget your password?</string>
+    <string name="error_email_notindatabase">This email address is not registered</string>
+    <string name="title_activity_signup">Sign Up</string>
 </resources>

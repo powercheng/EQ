@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -25,7 +24,6 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -33,25 +31,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.parse.SignUpCallback;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.parse.FindCallback;
-import com.parse.GetCallback;
-import com.parse.LogInCallback;
-import com.parse.Parse;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseUser;
-import com.parse.ParseQuery;
-import com.parse.RequestPasswordResetCallback;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+public class SignupActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -79,7 +71,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_signup);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
@@ -106,12 +98,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
-        EditText mEdit = (EditText) findViewById(R.id.forget_password);
-        //mEdit.setEnabled(false);
-        mEdit.setFocusable(false);
-        mEdit.setClickable(true);
-
-        //getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void populateAutoComplete() {
@@ -204,23 +190,28 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
+            //sign up here
             showProgress(true);
+            ParseUser user = new ParseUser();
+            user.setUsername(email);
+            user.setPassword(password);
+            user.setEmail(email);
 
-            //log in here
+// other fields can be set just like with ParseObject
+            //user.put("phone", "650-253-0000");
 
-            ParseUser.logInInBackground(email, password, new LogInCallback() {
-                public void done(ParseUser user, ParseException e) {
-                    if (user != null) {
-                        // Hooray! The user is logged in.
-                        //go to the map view
-
+            user.signUpInBackground(new SignUpCallback() {
+                public void done(ParseException e) {
+                    if (e == null) {
+                        // Hooray! Let them use the app now.
+                        //go to profile/map screen
+                        showProgress(false);
                     } else {
-                        //pop up a failed box.
-                        // Signup failed. Look at the ParseException to see what happened.
-                        showDialog("Invalid username/password","Please try again!");
+                        // Sign up didn't succeed. Look at the ParseException
+                        // to figure out what went wrong
+                        showDialog(e.toString(), "Please try again!");
                         showProgress(false);
                     }
-
                 }
             });
 
@@ -231,7 +222,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
-        return (email.contains("@") && email.contains("."));
+        return email.contains("@");
     }
 
     private boolean isPasswordValid(String password) {
@@ -312,7 +303,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(LoginActivity.this,
+                new ArrayAdapter<>(SignupActivity.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
         mEmailView.setAdapter(adapter);
@@ -341,41 +332,28 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         UserLoginTask(String email, String password) {
             mEmail = email;
             mPassword = password;
-
-            //log in here
-
-            ParseUser.logInInBackground(mEmail, mPassword, new LogInCallback() {
-                public void done(ParseUser user, ParseException e) {
-                    if (user != null) {
-                        // Hooray! The user is logged in.
-                    } else {
-                        // Signup failed. Look at the ParseException to see what happened.
-                    }
-                }
-            });
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
+            try {
+                // Simulate network access.
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                return false;
+            }
 
-//            try {
-//                // Simulate network access.
-//                Thread.sleep(2000);
-//            } catch (InterruptedException e) {
-//                return false;
-//            }
-//
-//            for (String credential : DUMMY_CREDENTIALS) {
-//                String[] pieces = credential.split(":");
-//                if (pieces[0].equals(mEmail)) {
-//                    // Account exists, return true if the password matches.
-//                    return pieces[1].equals(mPassword);
-//                }
-//            }
-//
-//            // TODO: register the new account here.
+            for (String credential : DUMMY_CREDENTIALS) {
+                String[] pieces = credential.split(":");
+                if (pieces[0].equals(mEmail)) {
+                    // Account exists, return true if the password matches.
+                    return pieces[1].equals(mPassword);
+                }
+            }
+
+            // TODO: register the new account here.
             return true;
         }
 
@@ -399,61 +377,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
-    //forget password
-    public void forgetPassword(View view) {
-        boolean cancel = false;
-        View focusView = null;
-
-        final String email = mEmailView.getText().toString();
-        if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
-            cancel = true;
-        } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
-            cancel = true;
-        }
-
-        if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
-            focusView.requestFocus();
-
-        }else{
-            //check if the email is registered in database
-            ParseQuery<ParseUser> query = ParseUser.getQuery();
-            query.findInBackground(new FindCallback<ParseUser>() {
-                public void done(List<ParseUser> objects, ParseException e) {
-                    if (e == null) {
-                        if(objects.size() == 0) {
-                            //email not valid
-                            mEmailView.setError(getString(R.string.error_email_notindatabase));
-                        }else {
-                            ParseUser.requestPasswordResetInBackground(email, new RequestPasswordResetCallback() {
-                                public void done(ParseException e) {
-                                    if (e == null) {
-                                        // An email was successfully sent with reset instructions.
-
-                                    } else {
-                                        // Something went wrong. Look at the ParseException to see what's up.
-                                    }
-                                }
-                            });
-                        }
-                        // The query was successful.
-                    } else {
-                        // Something went wrong.
-                    }
-                }
-            });
-
-        }
-    }
-
     private void showDialog(String title, String message){
         //show alert meesage.
-        AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
+        AlertDialog alertDialog = new AlertDialog.Builder(SignupActivity.this).create();
         alertDialog.setTitle(title);
         alertDialog.setMessage(message);
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
@@ -464,12 +390,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 });
         alertDialog.show();
 
-    }
-
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
     }
 }
 

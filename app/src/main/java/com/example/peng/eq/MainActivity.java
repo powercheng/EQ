@@ -1,6 +1,9 @@
 package com.example.peng.eq;
 
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -27,11 +30,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void login(View view) {
+
         Intent intent = new Intent(this, LoginActivity.class);
+        // Use TaskStackBuilder to build the back stack and get the PendingIntent
+
         startActivity(intent);
     }
 
-    public void signup() {
-
+    public void signup(View view) {
+        Intent intent = new Intent(this, SignupActivity.class);
+        startActivity(intent);
     }
 }
