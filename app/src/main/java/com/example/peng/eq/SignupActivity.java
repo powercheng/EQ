@@ -207,6 +207,8 @@ public class SignupActivity extends AppCompatActivity implements LoaderCallbacks
                         // Hooray! Let them use the app now.
                         //go to profile/map screen
                         showProgress(false);
+                        Intent mIntent = new Intent(SignupActivity.this, MainActivity.class);
+                        SignupActivity.this.startActivity(mIntent);
                     } else {
                         // Sign up didn't succeed. Look at the ParseException
                         // to figure out what went wrong
