@@ -451,6 +451,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
+    //Cizhen 161008
     private void showDialog(String title, String message){
         //show alert meesage.
         AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
@@ -471,5 +472,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
+    //Cizhen 161008
 }
 

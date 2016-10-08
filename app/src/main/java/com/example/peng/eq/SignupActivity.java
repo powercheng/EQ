@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -377,6 +378,8 @@ public class SignupActivity extends AppCompatActivity implements LoaderCallbacks
         }
     }
 
+
+    //Cizhen 161008
     private void showDialog(String title, String message){
         //show alert meesage.
         AlertDialog alertDialog = new AlertDialog.Builder(SignupActivity.this).create();
@@ -391,5 +394,13 @@ public class SignupActivity extends AppCompatActivity implements LoaderCallbacks
         alertDialog.show();
 
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    //Cizhen 161008
 }
 
