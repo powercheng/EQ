@@ -29,4 +29,9 @@
         android:background="#50cbed"
         android:text="@string/signUp"
         android:onClick="signup"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="detail"
+        android:text="detail"/>
 </RelativeLayout>

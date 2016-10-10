@@ -16,6 +16,8 @@ import com.parse.ParseUser;
 
 public class MainActivity extends AppCompatActivity {
     private static boolean isParseInitialized = false;
+    public final static String OBJECT_ID = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -48,4 +50,15 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, SignupActivity.class);
         startActivity(intent);
     }
+
+    //Cizhen 161008
+    public void detail(View view) {
+        //pass the objectid to the detamilInfoView
+        Intent intent = new Intent(this, DetailInfoActivity.class);
+
+        String objectid = "vG6L293QyB";
+        intent.putExtra(OBJECT_ID, objectid);
+        startActivity(intent);
+    }
+    //Cizhen 161008
 }

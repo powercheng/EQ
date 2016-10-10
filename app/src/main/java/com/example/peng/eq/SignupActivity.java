@@ -204,7 +204,7 @@ public class SignupActivity extends AppCompatActivity implements LoaderCallbacks
 
             user.signUpInBackground(new SignUpCallback() {
                 public void done(ParseException e) {
-                    Log.i("sttttt","aaaaa");
+//                    Log.i("sttttt","aaaaa");
                     if (e == null) {
                         // Hooray! Let them use the app now.
                         //go to profile/map screen
@@ -228,11 +228,12 @@ public class SignupActivity extends AppCompatActivity implements LoaderCallbacks
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
-        return email.contains("@");
+        return (email.contains("@") && email.contains("."));
     }
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
+
         return password.length() > 4;
     }
 
