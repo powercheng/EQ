@@ -10,18 +10,30 @@
     tools:context="com.example.peng.eq.AddEventActivity"
     android:weightSum="1"
     android:id="@+id/info_view">
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="Event Name:     "
+        android:textSize="10pt"/>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <TextView
+        <EditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text=""
-            android:textSize="11pt"
+            android:textSize="10pt"
             android:id="@+id/event_name"
+            android:background="@drawable/back"
             />
     </ScrollView>
+
+</LinearLayout>
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,7 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="Holder:     "
-            android:textSize="11pt"/>
+            android:textSize="10pt"/>
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -39,8 +51,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text=""
-                android:textSize="11pt"
+                android:textSize="10pt"
                 android:id="@+id/event_holder"
+                android:background="@drawable/back"
+
                 />
         </ScrollView>
     </LinearLayout>
@@ -51,18 +65,70 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Date &amp; Time:  "
-            android:textSize="11pt"/>
+            android:text="Date:  "
+            android:textSize="10pt"/>
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="0dp">
+            android:layout_marginLeft="0dp"
+            android:background="@drawable/back">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text=""
-                android:textSize="11pt"
-                android:id="@+id/event_datetime"
+                android:textSize="10pt"
+                android:id="@+id/pick_date"
+                />
+        </ScrollView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Time:  "
+            android:textSize="10pt"
+            />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:background="@drawable/back">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text=""
+                android:textSize="10pt"
+                android:id="@+id/pick_time"
+                />
+        </ScrollView>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Max. Attendee:   "
+            android:textSize="10pt"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text=""
+                android:textSize="10pt"
+                android:id="@+id/event_attendees"
+                android:background="@drawable/back"
+                android:inputType="number"
                 />
         </ScrollView>
     </LinearLayout>
@@ -74,7 +140,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="Address:   "
-            android:textSize="11pt"/>
+            android:textSize="10pt"/>
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -83,33 +149,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text=""
-                android:textSize="11pt"
+                android:textSize="10pt"
                 android:id="@+id/event_address"
                 />
         </ScrollView>
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="Max. Attendee:   "
-            android:textSize="11pt"/>
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="0dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text=""
-                android:textSize="11pt"
-                android:id="@+id/event_attendees"
-                />
-        </ScrollView>
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -134,18 +179,13 @@
             android:visibility="gone"
             />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="show date picker dialog"
 
-            android:id="@+id/pick_date"
-            />
 
 <TextView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/showDate"/>
+
 
         <Button
             android:layout_width="wrap_content"
@@ -157,7 +197,6 @@
             android:onClick="confirm"/>
 
     </RelativeLayout>
-
 
 
     <!--<ProgressBar-->

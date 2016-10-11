@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.parse.GetCallback;
@@ -32,9 +33,12 @@ import android.app.FragmentManager;
 public class AddEventActivity extends AppCompatActivity {
     private View mProgressView;
     private String hostId;
-    Button btn;
+    TextView date_btn;
     int year_x, month_x, day_x;
-    static final int DIALOG_ID = 0;
+    static final int DATE_ID = 0;
+    static final int TIME_ID = 1;
+    TextView time_btn;
+    int hour_x, minute_x, second_x;
 
 
     @Override
@@ -52,36 +56,49 @@ public class AddEventActivity extends AppCompatActivity {
         day_x = cal.get(Calendar.DAY_OF_MONTH);
 
         showDialogOnButtonClick();
+        showTimeDialogOnButtonClick();
 
 //        showProgress(true);
 
         //get current user or just search by id?
         //ParseQuery<ParseUser> queryUser = ParseUser.getQuery();
-//        ParseUser currentUser = ParseUser.getCurrentUser();
-//        if(currentUser != null) {
-//
-//        }else{
-//            ParseQuery<ParseUser> queryUser = ParseUser.getQuery();
-//            queryUser.getInBackground(hostId, new GetCallback<ParseUser>() {
-//                @Override
-//                public void done(ParseUser object, ParseException e) {
-//                    if(e == null) {
-//
-//                    }else {
-//                        Dialog.showDialog("No user found", "Please log in", AddEventActivity.this);
-//                    }
-//                }
-//            })
-//        }
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if(currentUser != null) {
+
+        }else{
+            ParseQuery<ParseUser> queryUser = ParseUser.getQuery();
+            queryUser.getInBackground(hostId, new GetCallback<ParseUser>() {
+                @Override
+                public void done(ParseUser object, ParseException e) {
+                    if(e == null) {
+                        TextView t = (TextView) findViewById(R.id.event_holder);
+                        t.setText(object.getString("username"));
+                    }else {
+                        //Dialog.showDialog("No user found", "Please log in", AddEventActivity.this);
+                    }
+                }
+            });
+        }
 
     }
 
-    public void showDialogOnButtonClick() {
-        btn = (Button) findViewById(R.id.pick_date);
-        btn.setOnClickListener(new View.OnClickListener(){
+    //show time dialog
+    public void showTimeDialogOnButtonClick(){
+        time_btn = (TextView) findViewById(R.id.pick_time);
+        time_btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                showDialog(DIALOG_ID);
+                showDialog(TIME_ID);
+            }
+        });
+    }
+
+    public void showDialogOnButtonClick() {
+        date_btn = (TextView) findViewById(R.id.pick_date);
+        date_btn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                showDialog(DATE_ID);
             }
 
         });
@@ -90,10 +107,26 @@ public class AddEventActivity extends AppCompatActivity {
 
     @Override
     protected Dialog onCreateDialog(int id){
-        if(id == DIALOG_ID)
+        if(id == DATE_ID){
             return new DatePickerDialog(this,dpickerListener, year_x,month_x,day_x);
+        }
+
+        else if(id == TIME_ID) {
+            return new TimePickerDialog(this, tpickerListener, hour_x, minute_x, false);
+        }
         return null;
     }
+
+    private TimePickerDialog.OnTimeSetListener tpickerListener
+            = new TimePickerDialog.OnTimeSetListener() {
+        @Override
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            hour_x = hourOfDay;
+            minute_x = minute;
+            time_btn.setText(hour_x + " : " + minute_x);
+            //Toast.makeText(AddEventActivity.this, hour_x + " : " + minute_x, Toast.LENGTH_SHORT).show();
+        }
+    };
 
     private DatePickerDialog.OnDateSetListener dpickerListener
             = new DatePickerDialog.OnDateSetListener(){
@@ -102,7 +135,8 @@ public class AddEventActivity extends AppCompatActivity {
             year_x = year;
             month_x = monthOfYear + 1;
             day_x = dayOfMonth;
-            Toast.makeText(AddEventActivity.this, year_x + " / " + month_x + " / " + day_x, Toast.LENGTH_LONG).show();
+            date_btn.setText(year_x + " / " + month_x + " / " + day_x);
+            //Toast.makeText(AddEventActivity.this, year_x + " / " + month_x + " / " + day_x, Toast.LENGTH_LONG).show();
         }
     };
 
@@ -117,6 +151,9 @@ public class AddEventActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void confirm(View view){}
+
 
 
 //    //another example of datepicker
