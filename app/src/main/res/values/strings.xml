@@ -21,4 +21,8 @@
     <string name="error_email_notindatabase">This email address is not registered</string>
     <string name="title_activity_signup">Sign Up</string>
     <string name="title_activity_detail">Event Detail Info</string>
+    <string name="title_add_event">Add Event</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

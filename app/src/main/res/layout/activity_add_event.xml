@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -6,32 +7,9 @@
     android:orientation="vertical"
 
 
-    tools:context="com.example.peng.eq.DetailInfoActivity"
+    tools:context="com.example.peng.eq.AddEventActivity"
     android:weightSum="1"
     android:id="@+id/info_view">
-
-
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_marginTop="50dp"
-            android:src="@mipmap/ic_launcher"
-
-            android:layout_alignParentTop="true"
-            android:id="@+id/event_image" />
-    </RelativeLayout>
-
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="gone" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -117,7 +95,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="# of Attendees:   "
+            android:text="Max. Attendee:   "
             android:textSize="11pt"/>
         <ScrollView
             android:layout_width="match_parent"
@@ -143,14 +121,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="going"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:id="@+id/attend_event"
-            android:onClick="attend"/>
+
 
         <Button
             android:layout_width="wrap_content"
@@ -163,8 +134,37 @@
             android:visibility="gone"
             />
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="show date picker dialog"
+
+            android:id="@+id/pick_date"
+            />
+
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/showDate"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="confirm"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:id="@+id/confirm_event"
+            android:onClick="confirm"/>
+
     </RelativeLayout>
 
 
 
+    <!--<ProgressBar-->
+        <!--android:id="@+id/progress_bar"-->
+        <!--style="?android:attr/progressBarStyleLarge"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:visibility="visible" />-->
 </LinearLayout>

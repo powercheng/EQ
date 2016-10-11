@@ -16,7 +16,8 @@ import com.parse.ParseUser;
 
 public class MainActivity extends AppCompatActivity {
     private static boolean isParseInitialized = false;
-    public final static String OBJECT_ID = "";
+    public final static String EVENT_ID = "";
+    public final static String HOST_ID = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +58,15 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, DetailInfoActivity.class);
 
         String objectid = "vG6L293QyB";
-        intent.putExtra(OBJECT_ID, objectid);
+        intent.putExtra(EVENT_ID, objectid);
+        startActivity(intent);
+    }
+
+    public void addEvent(View view) {
+        //send the hostid
+        Intent intent = new Intent(this, AddEventActivity.class);
+        String hostId = "Xoxb8Adg7W";
+        intent.putExtra(HOST_ID, hostId);
         startActivity(intent);
     }
     //Cizhen 161008

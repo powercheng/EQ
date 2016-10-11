@@ -30,5 +30,6 @@ dependencies {
     compile 'com.parse.bolts:bolts-android:1.+'
     compile 'com.parse:parse-android:1.+'
     compile 'com.android.support:design:24.2.1'
+    compile 'com.android.support:support-v4:24.2.1'
     testCompile 'junit:junit:4.12'
 }

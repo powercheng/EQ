@@ -28,12 +28,13 @@ import org.w3c.dom.Text;
 
 import java.net.URL;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class DetailInfoActivity extends AppCompatActivity {
     private View mProgressView;
-    private String objectId;
+    private String eventId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,11 +42,11 @@ public class DetailInfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail_info);
 
         mProgressView = findViewById(R.id.progress_bar);
-//
-//        //Cizhen 161008
+
+        //Cizhen 161008
         Intent intent = getIntent();
-        objectId = intent.getStringExtra(MainActivity.OBJECT_ID);
-//
+        eventId = intent.getStringExtra(MainActivity.EVENT_ID);
+
         showProgress(true);
 
         //check if current user has attended the event, show cancel button
@@ -53,24 +54,45 @@ public class DetailInfoActivity extends AppCompatActivity {
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
             // do stuff with the user
-            ParseQuery<ParseUser> queryUser = ParseUser.getQuery();
-            queryUser.findInBackground(new FindCallback<ParseUser>() {
-                public void done(List<ParseUser> objects, ParseException e) {
-                    if (e == null) {
 
-                    } else {
-                        // Something went wrong.
+        } else {
+            ParseQuery<ParseObject> queryConfirm = ParseQuery.getQuery("EventConfirm");
+
+            //to query pointer
+            ParseObject obj = ParseObject.createWithoutData("_User", "Xoxb8Adg7W");
+            queryConfirm.whereEqualTo("attendId", obj);
+            obj = ParseObject.createWithoutData("Event", eventId);
+            queryConfirm.whereEqualTo("eventId", obj);
+            queryConfirm.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> objects, ParseException e) {
+                    if(e == null) {
+                        if(objects.size() != 0) {
+                            //there exists an attending state of the current user
+                            //display cancel buttun
+                            Button btnGO = (Button) findViewById(R.id.attend_event);
+                            btnGO.setVisibility(View.GONE);
+                            Button btnCancel = (Button) findViewById(R.id.cancel_event);
+                            btnCancel.setVisibility(View.VISIBLE);
+                        }else {
+                            Button btnCancel = (Button) findViewById(R.id.cancel_event);
+                            btnCancel.setVisibility(View.GONE);
+                            Button btnGO = (Button) findViewById(R.id.attend_event);
+                            btnGO.setVisibility(View.VISIBLE);
+
+                        }
+                    }else {
+
                     }
                 }
             });
-        } else {
-            // show the signup or login screen
+
         }
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Event");
         //include the field if the field is a pointer
         query.include("hostId");
-        query.getInBackground(objectId, new GetCallback<ParseObject>() {
+        query.getInBackground(eventId, new GetCallback<ParseObject>() {
             public void done(ParseObject object, ParseException e) {
                 if (e == null) {
                     //retreiving objects
@@ -112,24 +134,42 @@ public class DetailInfoActivity extends AppCompatActivity {
         showProgress(true);
         //increment attendee by one to the event
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Event");
-        query.getInBackground(objectId, new GetCallback<ParseObject>(){
-            public void done(ParseObject object, ParseException e) {
+        query.getInBackground(eventId, new GetCallback<ParseObject>(){
+            public void done(final ParseObject object, ParseException e) {
                 //save objects
                 object.put("attendNum", object.getInt("attendNum") - 1);
                 object.saveInBackground();
-                Dialog.showDialog("Thank you!", "You've successfully attended.", DetailInfoActivity.this);
 
-                //show and hide buttons
-                Button btnCancel = (Button) findViewById(R.id.cancel_event);
-                btnCancel.setVisibility(View.VISIBLE);
-                Button btnGO = (Button) findViewById(R.id.cancel_event);
-                btnGO.setVisibility(View.GONE);
+                //remove the whole record in EventConfirm table
+                ParseQuery<ParseObject> queryConfirm = ParseQuery.getQuery("EventConfirm");
+                //should change to current user, if current user is null, should let them log in first
+                ParseObject obj = ParseObject.createWithoutData("_User", "Xoxb8Adg7W");
+                queryConfirm.whereEqualTo("attendId", obj);
+                obj = ParseObject.createWithoutData("Event", eventId);
+                queryConfirm.whereEqualTo("eventId", obj);
+                queryConfirm.findInBackground(new FindCallback<ParseObject>() {
+                    @Override
+                    public void done(List<ParseObject> objects, ParseException e) {
+                        if(e == null) {
+                            if(objects.size() != 0) {
+                                objects.get(0).deleteInBackground();
 
-                //refresh, how to????
-//                TextView t = (TextView) findViewById(R.id.event_attendees);
-                view.invalidate();
+                                Dialog.showDialog("Thank you!", "You've successfully canceled.", DetailInfoActivity.this);
 
-                showProgress(false);
+                                //show and hide buttons
+                                Button btnCancel = (Button) findViewById(R.id.cancel_event);
+                                btnCancel.setVisibility(View.GONE);
+                                Button btnGo = (Button) findViewById(R.id.attend_event);
+                                btnGo.setVisibility(View.VISIBLE);
+
+                                TextView t = (TextView) findViewById(R.id.event_attendees);
+//                                int a = object.getInt("attendNum");
+                                t.setText(Integer.toString(object.getInt("attendNum")));
+                                showProgress(false);
+                            }
+                        }
+                    }
+                });
             }
         });
     }
@@ -138,22 +178,35 @@ public class DetailInfoActivity extends AppCompatActivity {
         showProgress(true);
         //increment attendee by one to the event
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Event");
-        query.getInBackground(objectId, new GetCallback<ParseObject>(){
+        query.getInBackground(eventId, new GetCallback<ParseObject>(){
             public void done(ParseObject object, ParseException e) {
                 //update and save object
                 object.put("attendNum", object.getInt("attendNum") + 1);
                 object.saveInBackground();
+
+                //add record to EventConfirm table
+                ParseObject eventConfirmObj = new ParseObject("EventConfirm");
+                ParseObject obj = ParseObject.createWithoutData("_User", "Xoxb8Adg7W");
+                //should change to current user
+                eventConfirmObj.put("attendId", obj);
+                obj = ParseObject.createWithoutData("Event", eventId);
+                eventConfirmObj.put("eventId", obj);
+                eventConfirmObj.saveInBackground();
+
                 Dialog.showDialog("Thank you!", "You've successfully attended.", DetailInfoActivity.this);
 
                 //change button view
-                Button btnGO = (Button) findViewById(R.id.cancel_event);
+                Button btnGO = (Button) findViewById(R.id.attend_event);
                 btnGO.setVisibility(View.GONE);
                 Button btnCancel = (Button) findViewById(R.id.cancel_event);
                 btnCancel.setVisibility(View.VISIBLE);
 
                 //refresh the view
-//                TextView t = (TextView) findViewById(R.id.event_attendees);
-                view.invalidate();
+                TextView t = (TextView) findViewById(R.id.event_attendees);
+                t.setText(Integer.toString(object.getInt("attendNum")));
+
+//                t.setText(object.getInt("attendNum"));
+               // view.invalidate();
 
                 showProgress(false);
             }
