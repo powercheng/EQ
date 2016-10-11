@@ -10,6 +10,7 @@
     tools:context="com.example.peng.eq.AddEventActivity"
     android:weightSum="1"
     android:id="@+id/info_view">
+
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -37,7 +38,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -61,7 +63,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -85,7 +88,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -111,7 +115,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -126,7 +131,7 @@
                 android:layout_height="match_parent"
                 android:text=""
                 android:textSize="10pt"
-                android:id="@+id/event_attendees"
+                android:id="@+id/max_attendee"
                 android:background="@drawable/back"
                 android:inputType="number"
                 />
@@ -135,7 +140,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -191,6 +197,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="confirm"
+            android:background="@drawable/mybuttonstyle"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:id="@+id/confirm_event"

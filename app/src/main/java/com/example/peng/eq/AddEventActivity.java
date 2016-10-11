@@ -16,17 +16,25 @@ import android.widget.Toast;
 
 import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import android.app.DatePickerDialog;
 import android.widget.DatePicker;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+
+import org.w3c.dom.Text;
+
+import static android.R.attr.format;
 
 
 //public class AddEventActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
@@ -135,7 +143,7 @@ public class AddEventActivity extends AppCompatActivity {
             year_x = year;
             month_x = monthOfYear + 1;
             day_x = dayOfMonth;
-            date_btn.setText(year_x + " / " + month_x + " / " + day_x);
+            date_btn.setText(year_x + "/" + month_x + "/" + day_x);
             //Toast.makeText(AddEventActivity.this, year_x + " / " + month_x + " / " + day_x, Toast.LENGTH_LONG).show();
         }
     };
@@ -152,9 +160,80 @@ public class AddEventActivity extends AppCompatActivity {
         });
     }
 
-    public void confirm(View view){}
+    public void confirm(View view){
+         boolean error = false;
+         String eventName = "";
+        String eventDate = "";
+        String eventTime = "";
+        int attendNum = 0;
+
+        //detect if all required fields are entered
+        TextView tt = (TextView)findViewById(R.id.event_name);
+        if(isEmptyOrNull(tt)) {
+            com.example.peng.eq.Dialog.showDialog("","Please enter an event name.", AddEventActivity.this);
+            error = true;
+        }else{
+            eventName = tt.getText().toString();
+        }
+
+        tt = (TextView) findViewById(R.id.pick_date);
+        if(isEmptyOrNull(tt)){
+            com.example.peng.eq.Dialog.showDialog("","Please enter an event date.", AddEventActivity.this);
+            error = true;
+        }else{
+            eventDate = tt.getText().toString();
+        }
+
+        tt = (TextView)findViewById(R.id.pick_time);
+        if(isEmptyOrNull(tt)){
+            com.example.peng.eq.Dialog.showDialog("","Please enter an event time.", AddEventActivity.this);
+            error = true;
+        }else {
+            eventTime = tt.getText().toString();
+        }
+
+        tt = (TextView)findViewById(R.id.max_attendee);
+        if(isEmptyOrNull(tt)){
+            com.example.peng.eq.Dialog.showDialog("","Please enter the maximum number of attendees.", AddEventActivity.this);
+            error = true;
+        }else {
+            attendNum = Integer.parseInt(tt.getText().toString());
+        }
+
+        if(!error){
+            ParseObject event = new ParseObject("Event");
+            event.put("title", eventName);
+            event.put("eventDate", eventDate);
+            event.put("eventTime", eventTime);
+            event.put("maxAttendNum", attendNum);
+            event.saveInBackground(new SaveCallback() {
+                public void done(ParseException e) {
+                    if (e == null) {
+                        //myObjectSavedSuccessfully();
+
+                    } else {
+                        //myObjectSaveDidNotSucceed();
+
+                    }
+                }
+            });
+        }
 
 
+
+
+    }
+
+    private boolean isEmptyOrNull(TextView tt) {
+        boolean res = false;
+        String strTxt = tt.getText().toString();
+        if(strTxt == null || strTxt.isEmpty()) {
+            res = true;
+        }else {
+            res = false;
+        }
+        return res;
+    }
 
 //    //another example of datepicker
 //    public void data_picker(View view) {
