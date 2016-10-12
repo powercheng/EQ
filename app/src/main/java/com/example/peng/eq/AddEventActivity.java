@@ -8,8 +8,11 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -41,6 +44,7 @@ import static android.R.attr.format;
 public class AddEventActivity extends AppCompatActivity {
     private View mProgressView;
     private String hostId;
+    private EditText editT;
     TextView date_btn;
     int year_x, month_x, day_x;
     static final int DATE_ID = 0;
@@ -62,6 +66,10 @@ public class AddEventActivity extends AppCompatActivity {
         year_x = cal.get(Calendar.YEAR);
         month_x = cal.get(Calendar.MONTH);
         day_x = cal.get(Calendar.DAY_OF_MONTH);
+
+        editT = (EditText) findViewById(R.id.event_name);
+        editT.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
 
         showDialogOnButtonClick();
         showTimeDialogOnButtonClick();
