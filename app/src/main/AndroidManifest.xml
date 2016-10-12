@@ -18,6 +18,7 @@
         android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen">
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/NoTitle">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,6 +28,7 @@
         </activity>
         <activity
             android:name=".LoginActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_login"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme">
@@ -36,6 +38,7 @@
         </activity>
         <activity
             android:name=".SignupActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_signup"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme">
@@ -45,11 +48,13 @@
         </activity>
         <activity
             android:name=".DetailInfoActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_detail"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme" />
 
         <activity android:name=".AddEventActivity"
+            android:screenOrientation="portrait"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme"
             android:label="@string/title_add_event"
