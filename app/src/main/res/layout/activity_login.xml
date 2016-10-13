@@ -9,8 +9,8 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:theme="@style/AppTheme"
-    tools:context="com.example.peng.eq.LoginActivity"
-    android:weightSum="1">
+    tools:context="com.example.peng.eq.LoginActivity">
+
 
     <!-- Login progress -->
     <ProgressBar
@@ -21,70 +21,86 @@
         android:layout_marginBottom="8dp"
         android:visibility="gone" />
 
-
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp">
-        <AutoCompleteTextView
-            android:id="@+id/email"
+        <ScrollView
+            android:id="@+id/login_form"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/prompt_email"
-            android:inputType="textEmailAddress"
-            android:maxLines="1"
-            android:singleLine="true" />
-    </android.support.design.widget.TextInputLayout>
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/email_login_form"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginRight="50dp">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/prompt_email"
+                        android:inputType="textEmailAddress"
+                        android:maxLines="1"
+                        android:singleLine="true" />
 
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp">
-        <EditText
-            android:id="@+id/password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/prompt_password"
-            android:imeActionId="@+id/login"
-            android:imeActionLabel="@string/action_sign_in_short"
-            android:imeOptions="actionUnspecified"
-            android:inputType="textPassword"
-            android:maxLines="1"
-            android:singleLine="true" />
-
-    </android.support.design.widget.TextInputLayout>
+                </android.support.design.widget.TextInputLayout>
 
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="@string/forget_password"
-        android:gravity="center"
-        android:textSize="15sp"
-        android:id="@+id/forget_password"
-        android:textColor="@color/colorPrimaryDark"
-        android:onClick="forgetPassword" />
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginRight="50dp">
 
-        <Button
-            android:id="@+id/email_sign_in_button"
-            style="?android:textAppearanceSmall"
-
-            android:layout_height="wrap_content"
-            android:layout_width="150dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/mybuttonstyle"
-            android:text="@string/action_sign_in"
-            android:textStyle="bold"
-            android:shadowRadius="100"
-
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+                    <EditText
+                        android:id="@+id/password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/prompt_password"
+                        android:imeActionId="@+id/login"
+                        android:imeActionLabel="@string/action_sign_in_short"
+                        android:imeOptions="actionUnspecified"
+                        android:inputType="textPassword"
+                        android:maxLines="1"
+                        android:singleLine="true" />
 
 
-</LinearLayout>
+                </android.support.design.widget.TextInputLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/forget_password"
+                    android:gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:textSize="15sp"
+                    android:id="@+id/forget_password"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:onClick="forgetPassword"/>
+
+
+                <Button
+                    android:id="@+id/email_sign_in_button"
+                    style="?android:textAppearanceSmall"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="0dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/action_sign_in"
+                    android:textStyle="bold"
+                    android:shadowRadius="100"
+                    android:background="@drawable/mybuttonstyle"
+
+
+                    />
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>

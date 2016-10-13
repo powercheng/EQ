@@ -80,6 +80,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
@@ -113,6 +115,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEdit.setClickable(true);
 
         //getActionBar().setDisplayHomeAsUpEnabled(true);
+
     }
 
     private void populateAutoComplete() {
@@ -214,9 +217,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     if (user != null) {
                         // Hooray! The user is logged in.
                         //go to the map view
+                        Intent intent = new Intent(getBaseContext(), MapActivity.class);
+                        startActivity(intent);
 
                     } else {
-                        //pop up a failed box.
+                        //pop up a failed box.Map
                         // Signup failed. Look at the ParseException to see what happened.
                         showDialog("Invalid username/password","Please try again!");
                         showProgress(false);
@@ -434,10 +439,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             ParseUser.requestPasswordResetInBackground(email, new RequestPasswordResetCallback() {
                                 public void done(ParseException e) {
                                     if (e == null) {
-                                        // An email was successfully sent with reset instructions.
-
+                                        Dialog.showDialog("","check your email to reset password",LoginActivity.this);
                                     } else {
                                         // Something went wrong. Look at the ParseException to see what's up.
+                                        Dialog.showDialog("","the email didn't register",LoginActivity.this);
                                     }
                                 }
                             });

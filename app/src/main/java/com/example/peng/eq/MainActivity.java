@@ -22,14 +22,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        if(!isParseInitialized){
-            Parse.initialize(new Parse.Configuration.Builder(this)
-                    .applicationId("5mUU6pV0Ljoc3Er2ZrJoUUBC93kBeEfuvu2vkIUw")
-                    .clientKey("0vj8zObedfUjbtTc92cX8TIR2ccEEhlIdgfvf5BG")
-                    .server("https://parseapi.back4app.com/").build()
-            );
-            isParseInitialized = true;
-        }
+
 
 //        ParseObject testObject = new ParseObject("Event");
 //        testObject.put("title", "bar");
@@ -37,6 +30,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
+        View decorView = getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
     }
 
     public void login(View view) {
@@ -48,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void signup(View view) {
-        Intent intent = new Intent(this, SignupActivity.class);
+        Intent intent = new Intent(this, MapActivity.class);
         startActivity(intent);
     }
 

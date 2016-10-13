@@ -1,0 +1,26 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.peng.eq.MapActivity">
+    <item
+        android:id="@+id/club"
+        android:title="club"/>
+
+    <item
+        android:id="@+id/sport"
+        android:title="sport"
+        />
+
+    <item
+        android:id="@+id/art"
+        android:title="art"
+        />
+
+    <item
+        android:id="@+id/all"
+        android:title="all"
+        />
+
+
+
+</menu>
