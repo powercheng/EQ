@@ -3,19 +3,30 @@ package com.example.peng.eq;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
+import com.parse.GetDataCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -32,14 +43,23 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class DetailInfoActivity extends AppCompatActivity {
+public class DetailInfoActivity extends AppCompatActivity implements OnMapReadyCallback {
     private View mProgressView;
     private String eventId;
+    private GoogleMap mMap;
+    double tempLat, tempLong;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_info);
+
+        //show map
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
 
         mProgressView = findViewById(R.id.progress_bar);
 
@@ -79,7 +99,6 @@ public class DetailInfoActivity extends AppCompatActivity {
                             btnCancel.setVisibility(View.GONE);
                             Button btnGO = (Button) findViewById(R.id.attend_event);
                             btnGO.setVisibility(View.VISIBLE);
-
                         }
                     }else {
 
@@ -101,7 +120,7 @@ public class DetailInfoActivity extends AppCompatActivity {
                     t.setText(title);
 
                     String updatedAt = DateFormat.getDateTimeInstance().format(object.getUpdatedAt());
-                    t = (TextView) findViewById(R.id.event_datetime);
+                    t = (TextView) findViewById(R.id.event_time);
                     t.setText(updatedAt);
 
                     int numberAttendee = object.getInt("attendNum");
@@ -114,9 +133,42 @@ public class DetailInfoActivity extends AppCompatActivity {
                     t = (TextView) findViewById(R.id.event_holder);
                     t.setText(hh);
 
+                    //get location
+                    tempLat = object.getParseGeoPoint("eventLocation").getLatitude();
+                    tempLong = object.getParseGeoPoint("eventLocation").getLongitude();
+                    LatLng temp = new LatLng(tempLat, tempLong);
+                    mMap.addMarker(new MarkerOptions().position(temp).title("event")
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(temp));
+
                     //file object, still figuring out this part..
-                    ParseFile image = (ParseFile) object.get("image");
-                    showProgress(false);
+                    ParseFile fileObj = (ParseFile) object.get("image");
+                    fileObj.getDataInBackground(new GetDataCallback() {
+                        @Override
+                        public void done(byte[] data, ParseException e) {
+
+                            if (e == null) {
+                                // Decode the Byte[] into
+                                // Bitmap
+                                Bitmap bmp = BitmapFactory
+                                        .decodeByteArray(
+                                                data, 0,
+                                                data.length);
+
+                                // initialize
+                                ImageView image = (ImageView) findViewById(R.id.event_image);
+
+                                // Set the Bitmap into the
+                                // ImageView
+                                image.setImageBitmap(bmp);
+
+                            } else {
+                                Log.d("test", "Problem load image the data.");
+                            }
+                            showProgress(false);
+                        }
+                    });
+
                 } else {
                     // something went wrong
                     Dialog.showDialog(e.toString(), "", DetailInfoActivity.this);
@@ -124,11 +176,7 @@ public class DetailInfoActivity extends AppCompatActivity {
             }
         });
         //Cizhen 161008
-//
-
     }
-
-    //Cizhen 161008
 
     public void cancel(final View view) {
         showProgress(true);
@@ -205,8 +253,9 @@ public class DetailInfoActivity extends AppCompatActivity {
                 TextView t = (TextView) findViewById(R.id.event_attendees);
                 t.setText(Integer.toString(object.getInt("attendNum")));
 
+
 //                t.setText(object.getInt("attendNum"));
-               // view.invalidate();
+                // view.invalidate();
 
                 showProgress(false);
             }
@@ -227,6 +276,26 @@ public class DetailInfoActivity extends AppCompatActivity {
 
 
     //Cizhen 161008
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+//        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            // TODO: Consider calling
+//            //    ActivityCompat#requestPermissions
+//            // here to request the missing permissions, and then overriding
+//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//            //                                          int[] grantResults)
+//            // to handle the case where the user grants the permission. See the documentation
+//            // for ActivityCompat#requestPermissions for more details.
+//            return;
+//        }
+//        mMap.setMyLocationEnabled(true);
+        // Add a marker in Sydney and move the camera
+/*        LatLng sydney = new LatLng(-34, 151);
+        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));*/
+    }
+
 
 
 }
