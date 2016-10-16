@@ -74,12 +74,11 @@ public class DetailInfoActivity extends AppCompatActivity implements OnMapReadyC
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
             // do stuff with the user
-
-        } else {
+            ParseUser user = ParseUser.getCurrentUser();
             ParseQuery<ParseObject> queryConfirm = ParseQuery.getQuery("EventConfirm");
 
             //to query pointer
-            ParseObject obj = ParseObject.createWithoutData("_User", "Xoxb8Adg7W");
+            ParseObject obj = ParseObject.createWithoutData("_User", user.getObjectId());
             queryConfirm.whereEqualTo("attendId", obj);
             obj = ParseObject.createWithoutData("Event", eventId);
             queryConfirm.whereEqualTo("eventId", obj);
@@ -106,6 +105,8 @@ public class DetailInfoActivity extends AppCompatActivity implements OnMapReadyC
                 }
             });
 
+        } else {
+
         }
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Event");
@@ -125,13 +126,18 @@ public class DetailInfoActivity extends AppCompatActivity implements OnMapReadyC
 
                     int numberAttendee = object.getInt("attendNum");
                     t = (TextView) findViewById(R.id.event_attendees);
-                    t.setText(Integer.toString(numberAttendee));
+                    t.setText(Integer.toString(numberAttendee) + " people are going.");
+
+                    String description = object.getString("description");
+                    t = (TextView) findViewById(R.id.event_description);
+                    t.setText(description);
 
                     //to access pointer object.
                     ParseUser holder = object.getParseUser("hostId");
                     String hh = holder.getString("username");
                     t = (TextView) findViewById(R.id.event_holder);
                     t.setText(hh);
+
 
                     //get location
                     tempLat = object.getParseGeoPoint("eventLocation").getLatitude();
@@ -212,7 +218,7 @@ public class DetailInfoActivity extends AppCompatActivity implements OnMapReadyC
 
                                 TextView t = (TextView) findViewById(R.id.event_attendees);
 //                                int a = object.getInt("attendNum");
-                                t.setText(Integer.toString(object.getInt("attendNum")));
+                                t.setText(Integer.toString(object.getInt("attendNum")) + " people are going");
                                 showProgress(false);
                             }
                         }
@@ -251,7 +257,7 @@ public class DetailInfoActivity extends AppCompatActivity implements OnMapReadyC
 
                 //refresh the view
                 TextView t = (TextView) findViewById(R.id.event_attendees);
-                t.setText(Integer.toString(object.getInt("attendNum")));
+                t.setText(Integer.toString(object.getInt("attendNum"))+ " people are going");
 
 
 //                t.setText(object.getInt("attendNum"));

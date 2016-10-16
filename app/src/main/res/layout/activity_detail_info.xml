@@ -1,271 +1,224 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_centerHorizontal="true"
-    android:orientation="vertical"
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--xmlns:tools="http://schemas.android.com/tools"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:orientation="vertical"-->
 
 
-    tools:context="com.example.peng.eq.DetailInfoActivity"
-    android:weightSum="1"
-    android:id="@+id/info_view">
+    <!--tools:context="com.example.peng.eq.DetailInfoActivity"-->
+    <!--android:weightSum="1"-->
+    <!--android:id="@+id/info_view">-->
 
+    <!--<ScrollView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="vertical"-->
+            <!--android:layout_gravity="top"-->
+
+            <!--&gt;-->
+
+
+
+
+
+
+
+
+
+            <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textSize="10pt"-->
+                <!--android:gravity="center_horizontal"-->
+                <!--android:id="@+id/event_attendees"/>-->
+
+
+            <!--<RelativeLayout-->
+                <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_height="wrap_content">&ndash;&gt;-->
+                <!--&lt;!&ndash;<Button&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:text="going"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_alignParentBottom="true"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_alignParentRight="true"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:id="@+id/attend_event"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:onClick="attend"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:background="@drawable/mybuttonstyle"/>&ndash;&gt;-->
+
+                <!--&lt;!&ndash;<Button&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:text="not going"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_alignParentBottom="true"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_alignParentRight="true"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:id="@+id/cancel_event"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:onClick="cancel"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:visibility="gone"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:background="@drawable/mybuttonstyle"&ndash;&gt;-->
+                    <!--&lt;!&ndash;/>&ndash;&gt;-->
+            <!--&lt;!&ndash;</RelativeLayout>&ndash;&gt;-->
+
+
+
+            <!--<RelativeLayout-->
+                <!--android:id="@+id/InnerRelativeLayout"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentBottom="true" >-->
+
+                <!--<Button-->
+                    <!--android:text="Going"-->
+                    <!--android:id="@+id/Button"-->
+                    <!--android:layout_alignParentRight="true"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:background="@drawable/mybuttonstyle"-->
+                    <!--android:layout_height="wrap_content">-->
+                <!--</Button>-->
+
+                <!--<EditText-->
+                    <!--android:id="@+id/EditText"-->
+                    <!--android:layout_width="fill_parent"-->
+                    <!--android:layout_toLeftOf="@id/Button"-->
+                    <!--android:layout_height="wrap_content">-->
+                <!--</EditText>-->
+
+            <!--</RelativeLayout>-->
+
+
+        <!--</LinearLayout>-->
+    <!--</ScrollView>-->
+
+<!--</LinearLayout>-->
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_gravity="top"
-            >
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:src="@mipmap/ic_launcher"
-                android:id="@+id/event_image"/>
+            android:orientation="vertical">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:src="@mipmap/ic_launcher"
+        android:gravity="center_horizontal"
+        android:id="@+id/event_image"/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/event_time"
-                android:textSize="10dp"
-                />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/event_time"
+        android:layout_below="@id/event_image"
+        android:gravity="center_horizontal"
+        android:textSize="12dp"
+        />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/event_holder"
-                android:textSize="10dp"
-                />
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@id/event_name"
-                    android:textSize="15pt"
-                    android:textStyle="bold"
-                    />
-            </ScrollView>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/event_holder"
+        android:gravity="center_horizontal"
+        android:layout_below="@id/event_time"
+        android:textSize="12dp"
+        />
 
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/event_description"
-                    android:textSize="9pt"/>
-            </ScrollView>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/event_time"
+        android:id="@+id/evnet_name_scroll">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:id="@id/event_name"
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="10pt"
-                android:id="@+id/event_attendees"/>
-
-            <fragment
-                xmlns:map="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/map"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                map:cameraZoom="13"
-                tools:context="com.example.peng.eq.DetailInfoActivity" />
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="going"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentRight="true"
-                    android:id="@+id/attend_event"
-                    android:onClick="attend"
-                    android:background="@drawable/mybuttonstyle"/>
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="not going"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentRight="true"
-                    android:id="@+id/cancel_event"
-                    android:onClick="cancel"
-                    android:visibility="gone"
-                    android:background="@drawable/mybuttonstyle"
-                    />
-            </RelativeLayout>
-
-
-
-            <ProgressBar
-                android:id="@+id/progress_bar"
-                style="?android:attr/progressBarStyleLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:visibility="gone" />
-
-        </LinearLayout>
+            android:textSize="15pt"
+            android:textStyle="bold"
+            />
     </ScrollView>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/evnet_name_scroll"
+        android:id="@+id/evnet_description_scroll">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/event_description"
+            android:gravity="center_horizontal"
+            android:textSize="9pt"/>
+    </ScrollView>
 
-    <!--<ScrollView-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent">-->
-    <!--<LinearLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent">-->
-    <!--<ImageView-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="150dp"-->
-    <!--android:src="@mipmap/ic_launcher"-->
+    <fragment
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        map:cameraZoom="13"
+        android:gravity="center_horizontal"
+        tools:context="com.example.peng.eq.DetailInfoActivity"
+        android:layout_below="@+id/evnet_description_scroll"/>
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+        </LinearLayout>
+    </ScrollView>
+    <RelativeLayout
+        android:id="@+id/InnerRelativeLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/back">
 
-    <!--android:id="@+id/event_image"-->
-    <!--android:layout_alignParentTop="true" />-->
+        <Button
+            android:text="GOING"
+            android:id="@+id/attend_event"
+            android:layout_alignParentRight="true"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:visibility="visible"
+            android:background="@drawable/mybuttonstyle"
+            android:onClick="attend">
+        </Button>
+        <Button
+            android:text="not going"
+            android:id="@+id/cancel_event"
+            android:layout_alignParentRight="true"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:visibility="gone"
+            android:background="@drawable/mybuttonstyle"
+            android:onClick="cancel">
+        </Button>
 
+        <TextView
+            android:id="@+id/event_attendees"
+            android:layout_width="match_parent"
+            android:layout_toLeftOf="@id/attend_event"
+            android:layout_height="40dp"
+            android:textSize="20dp"
+            android:text="">
+        </TextView>
 
-    <!--<TextView-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:text=""-->
-    <!--android:textSize="9pt"-->
-    <!--android:id="@+id/event_datetime"-->
-    <!--/>-->
-    <!---->
+    </RelativeLayout>
 
-    <!--</LinearLayout>-->
-    <!--</ScrollView>-->
-
-
-
-
-
-
-    <!--<ScrollView-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content">-->
-    <!--<TextView-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:text=""-->
-    <!--android:textSize="11pt"-->
-    <!--android:id="@+id/event_name"-->
-    <!--/>-->
-    <!--</ScrollView>-->
-
-    <!--<LinearLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content">-->
-    <!--<TextView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:text="Holder:     "-->
-    <!--android:textSize="9pt"/>-->
-    <!--<ScrollView-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginLeft="0dp">-->
-    <!--<TextView-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:text=""-->
-    <!--android:textSize="9pt"-->
-    <!--android:id="@+id/event_holder"-->
-    <!--/>-->
-    <!--</ScrollView>-->
-    <!--</LinearLayout>-->
-
-    <!--<LinearLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content">-->
-    <!--<TextView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:text="Date &amp; Time:  "-->
-    <!--android:textSize="9pt"/>-->
-    <!--<ScrollView-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginLeft="0dp">-->
-    <!--<TextView-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:text=""-->
-    <!--android:textSize="9pt"-->
-    <!--android:id="@+id/event_datetime"-->
-    <!--/>-->
-    <!--</ScrollView>-->
-    <!--</LinearLayout>-->
-
-
-
-    <!--<LinearLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content">-->
-    <!--<TextView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:text="# of Attendees:   "-->
-    <!--android:textSize="9pt"/>-->
-    <!--<ScrollView-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginLeft="0dp">-->
-    <!--<TextView-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:text=""-->
-    <!--android:textSize="9pt"-->
-    <!--android:id="@+id/event_attendees"-->
-    <!--/>-->
-    <!--</ScrollView>-->
-    <!--</LinearLayout>-->
-
-    <!--<LinearLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content">-->
-    <!--<TextView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:text="Location:   "-->
-    <!--android:textSize="9pt"/>-->
-    <!--<ScrollView-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginLeft="0dp">-->
-    <!--<TextView-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:text=""-->
-    <!--android:textSize="9pt"-->
-    <!--android:id="@+id/event_address"-->
-    <!--/>-->
-    <!--</ScrollView>-->
-    <!--</LinearLayout>-->
-
-    <!--<LinearLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="200dp">-->
-
-    <!--</LinearLayout>-->
-
-    <!--<RelativeLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--&gt;-->
-
-
-
-
-    <!--</RelativeLayout>-->
-
-
-
-</LinearLayout>
+</RelativeLayout>
