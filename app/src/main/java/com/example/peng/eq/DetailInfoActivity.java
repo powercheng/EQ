@@ -121,11 +121,14 @@ public class DetailInfoActivity extends AppCompatActivity implements OnMapReadyC
                     TextView t = (TextView) findViewById(R.id.event_name);
                     t.setText(title);
 
+                    String address = object.getString("address");
+                    t = (TextView) findViewById(R.id.event_address);
+                    t.setText(address);
 
                     String eventDate = object.getString("eventDate");
                     String eventTime = object.getString("eventTime");
                     t = (TextView) findViewById(R.id.event_time);
-                    t.setText(eventDate + " " + eventTime);
+                    t.setText(eventDate + "           " + eventTime);
 
                     int numberAttendee = object.getInt("attendNum");
                     t = (TextView) findViewById(R.id.event_attendees);
@@ -145,6 +148,8 @@ public class DetailInfoActivity extends AppCompatActivity implements OnMapReadyC
                     int maxNumAttendee = object.getInt("maxAttendNum");
                     int attendNum = object.getInt("attendNum");
                     if(maxNumAttendee == attendNum){
+                        t = (TextView) findViewById(R.id.event_attendees);
+                        t.setText("maximum attendees");
                         Button btn = (Button) findViewById(R.id.attend_event);
                         btn.setEnabled(false);
                     }

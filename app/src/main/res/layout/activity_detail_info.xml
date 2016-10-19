@@ -1,18 +1,13 @@
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
     >
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="0dp"
+        android:layout_weight="2"
         android:src="@mipmap/ic_launcher"
         android:gravity="center_horizontal"
         android:id="@+id/event_image"/>
@@ -21,7 +16,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/event_time"
-        android:layout_below="@id/event_image"
+        android:gravity="center_horizontal"
+        android:textSize="15dp"
+        />
+
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/event_address"
+
         android:gravity="center_horizontal"
         android:textSize="15dp"
         />
@@ -31,10 +36,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/event_holder"
         android:gravity="center_horizontal"
-        android:layout_below="@id/event_time"
         android:textSize="15dp"
         />
-
     <!--<ScrollView-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="wrap_content"-->
@@ -51,19 +54,21 @@
             />
     <!--</ScrollView>-->
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
 
-        android:id="@+id/evnet_description_scroll">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/event_description"
-            android:gravity="center_horizontal"
 
-            android:textSize="12dp"/>
-    </ScrollView>
+                android:id="@+id/evnet_description_scroll">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/event_description"
+                    android:gravity="center_horizontal"
+
+                    android:textSize="12dp"/>
+            </ScrollView>
 
     <fragment
         xmlns:map="http://schemas.android.com/apk/res-auto"
@@ -71,20 +76,19 @@
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="0dp"
+        android:layout_weight="4"
         map:cameraZoom="13"
         android:gravity="center_horizontal"
-        tools:context="com.example.peng.eq.DetailInfoActivity"
-        android:layout_below="@+id/evnet_description_scroll"/>
+        tools:context="com.example.peng.eq.DetailInfoActivity" />
         <ProgressBar
             android:id="@+id/progress_bar"
             style="?android:attr/progressBarStyleLarge"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:visibility="gone" />
-        </LinearLayout>
-    </ScrollView>
     <RelativeLayout
         android:id="@+id/InnerRelativeLayout"
         android:layout_width="wrap_content"
@@ -124,4 +128,4 @@
 
     </RelativeLayout>
 
-</RelativeLayout>
+</LinearLayout>
