@@ -39,8 +39,8 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="addEvent"
-        android:text="event"
+        android:onClick="addEvent2"
+        android:text="event2"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
@@ -51,5 +51,13 @@
         app:srcCompat="@drawable/logo2"
         android:id="@+id/imageView"
         android:layout_marginTop="105dp"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="addEvent"
+        android:text="event"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>

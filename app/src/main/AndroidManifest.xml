@@ -19,7 +19,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
-        android:name = ".user"
+        android:name=".user"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:supportsRtl="true">
@@ -60,10 +60,16 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
 
-
         <activity
             android:name=".AddEventActivity"
             android:label="@string/title_add_event"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".addEvent2Activity"
+            android:label="@string/title_add_event2"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
@@ -85,11 +91,15 @@
             android:name=".MapActivity"
             android:label=""
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" /><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+            android:theme="@style/AppTheme" />
+        <!--
+ ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
+        -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
     </application>
 
 </manifest>

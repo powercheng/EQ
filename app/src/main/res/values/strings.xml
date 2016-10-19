@@ -22,6 +22,7 @@
     <string name="title_activity_signup">Sign Up</string>
     <string name="title_activity_detail">Event Detail Info</string>
     <string name="title_add_event">Add Event</string>
+    <string name="title_add_event2">Add Event2</string>
     <string name="map_activity">EQ map</string>
 
     <!-- TODO: Remove or change this placeholder text -->
