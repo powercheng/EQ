@@ -9,6 +9,8 @@ public class addEvent2Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event2);
+
+        ///
     }
 
 
