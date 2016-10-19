@@ -98,6 +98,7 @@ public class DetailInfoActivity extends AppCompatActivity implements OnMapReadyC
                             btnCancel.setVisibility(View.GONE);
                             Button btnGO = (Button) findViewById(R.id.attend_event);
                             btnGO.setVisibility(View.VISIBLE);
+//                            btnGO.setEnabled(false);
                         }
                     }else {
 
@@ -120,9 +121,11 @@ public class DetailInfoActivity extends AppCompatActivity implements OnMapReadyC
                     TextView t = (TextView) findViewById(R.id.event_name);
                     t.setText(title);
 
-                    String updatedAt = DateFormat.getDateTimeInstance().format(object.getUpdatedAt());
+
+                    String eventDate = object.getString("eventDate");
+                    String eventTime = object.getString("eventTime");
                     t = (TextView) findViewById(R.id.event_time);
-                    t.setText(updatedAt);
+                    t.setText(eventDate + " " + eventTime);
 
                     int numberAttendee = object.getInt("attendNum");
                     t = (TextView) findViewById(R.id.event_attendees);
@@ -138,6 +141,13 @@ public class DetailInfoActivity extends AppCompatActivity implements OnMapReadyC
                     t = (TextView) findViewById(R.id.event_holder);
                     t.setText(hh);
 
+                    //enable or disable button
+                    int maxNumAttendee = object.getInt("maxAttendNum");
+                    int attendNum = object.getInt("attendNum");
+                    if(maxNumAttendee == attendNum){
+                        Button btn = (Button) findViewById(R.id.attend_event);
+                        btn.setEnabled(false);
+                    }
 
                     //get location
                     tempLat = object.getParseGeoPoint("eventLocation").getLatitude();

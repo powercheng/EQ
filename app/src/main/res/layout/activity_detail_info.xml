@@ -1,5 +1,3 @@
-
-
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
@@ -25,7 +23,7 @@
         android:id="@+id/event_time"
         android:layout_below="@id/event_image"
         android:gravity="center_horizontal"
-        android:textSize="12dp"
+        android:textSize="15dp"
         />
 
     <TextView
@@ -34,36 +32,37 @@
         android:id="@+id/event_holder"
         android:gravity="center_horizontal"
         android:layout_below="@id/event_time"
-        android:textSize="12dp"
+        android:textSize="15dp"
         />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/event_time"
-        android:id="@+id/evnet_name_scroll">
+    <!--<ScrollView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/event_time"-->
+        <!--android:id="@+id/evnet_name_scroll">-->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:id="@id/event_name"
-
-            android:textSize="15pt"
+            android:maxLines="3"
+            android:textSize="25dp"
             android:textStyle="bold"
             />
-    </ScrollView>
+    <!--</ScrollView>-->
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/evnet_name_scroll"
+        android:layout_height="100dp"
+
         android:id="@+id/evnet_description_scroll">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/event_description"
             android:gravity="center_horizontal"
-            android:textSize="9pt"/>
+
+            android:textSize="12dp"/>
     </ScrollView>
 
     <fragment
