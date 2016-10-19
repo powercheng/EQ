@@ -100,7 +100,7 @@ public class AddEventActivity extends AppCompatActivity {
 
     //show time dialog
     public void showTimeDialogOnButtonClick(){
-        time_btn = (TextView) findViewById(R.id.pick_time);
+//        time_btn = (TextView) findViewById(R.id.pick_time);
         time_btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -110,7 +110,7 @@ public class AddEventActivity extends AppCompatActivity {
     }
 
     public void showDialogOnButtonClick() {
-        date_btn = (TextView) findViewById(R.id.pick_date);
+//        date_btn = (TextView) findViewById(R.id.pick_date);
         date_btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -184,7 +184,7 @@ public class AddEventActivity extends AppCompatActivity {
             eventName = tt.getText().toString();
         }
 
-        tt = (TextView) findViewById(R.id.pick_date);
+//        tt = (TextView) findViewById(R.id.pick_date);
         if(isEmptyOrNull(tt)){
             com.example.peng.eq.Dialog.showDialog("","Please enter an event date.", AddEventActivity.this);
             error = true;
@@ -192,7 +192,7 @@ public class AddEventActivity extends AppCompatActivity {
             eventDate = tt.getText().toString();
         }
 
-        tt = (TextView)findViewById(R.id.pick_time);
+//        tt = (TextView)findViewById(R.id.pick_time);
         if(isEmptyOrNull(tt)){
             com.example.peng.eq.Dialog.showDialog("","Please enter an event time.", AddEventActivity.this);
             error = true;
@@ -200,7 +200,7 @@ public class AddEventActivity extends AppCompatActivity {
             eventTime = tt.getText().toString();
         }
 
-        tt = (TextView)findViewById(R.id.max_attendee);
+//        tt = (TextView)findViewById(R.id.max_attendee);
         if(isEmptyOrNull(tt)){
             com.example.peng.eq.Dialog.showDialog("","Please enter the maximum number of attendees.", AddEventActivity.this);
             error = true;

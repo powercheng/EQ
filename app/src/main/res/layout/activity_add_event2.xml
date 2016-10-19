@@ -17,7 +17,8 @@
         android:inputType="textPersonName"
         android:id="@+id/title"
         android:imeOptions="actionDone"
-        android:hint="Title" />
+        android:hint="Title"
+        android:maxLength="100"/>
 
 
     <EditText
@@ -26,7 +27,8 @@
         android:inputType="textPostalAddress"
         android:id="@+id/street"
         android:imeOptions="actionDone"
-        android:hint="Apt Street" />
+        android:hint="Apt Street"
+        android:maxLength="100"/>
 
     <LinearLayout
         android:orientation="horizontal"
@@ -44,10 +46,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:inputType="textPostalAddress"
+            android:inputType="textCapCharacters"
             android:id="@+id/state"
             android:imeOptions="actionDone"
-            android:hint="State" />
+            android:hint="State"
+            android:maxLength="2"
+            />
         <EditText
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -55,7 +59,8 @@
             android:inputType="number"
             android:id="@+id/Zip"
             android:imeOptions="actionDone"
-            android:hint="Zip" />
+            android:hint="Zip"
+            android:maxLength="5"/>
 
     </LinearLayout>
     <LinearLayout
@@ -70,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:textSize="24sp" />
+            android:textSize="20sp" />
 
         <Button
             android:hint="01/01/2016"
@@ -79,7 +84,8 @@
             android:layout_weight="1"
             android:gravity="center_vertical|right"
             android:id="@+id/date"
-            android:textSize="24sp" />
+            android:textSize="20sp"
+            android:background="@color/map"/>
     </LinearLayout>
 
     <LinearLayout
@@ -94,7 +100,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:textSize="24sp" />
+            android:textSize="20sp" />
 
         <Button
             android:hint="00:00"
@@ -103,7 +109,8 @@
             android:layout_weight="1"
             android:gravity="center_vertical|right"
             android:id="@+id/time"
-            android:textSize="24sp" />
+            android:textSize="20sp"
+            android:background="@color/map"/>
 
     </LinearLayout>
 
@@ -127,11 +134,12 @@
 
     <Button
         android:text="Submit"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:id="@+id/button3"
         android:elevation="0dp"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:background="@drawable/mybuttonstyle"/>
 
 
 

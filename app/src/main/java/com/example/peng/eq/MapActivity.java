@@ -73,7 +73,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         toolbar.setNavigationIcon(R.mipmap.connect48);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent i = new Intent(MapActivity.this, LoginActivity.class);
+                Intent i = new Intent(MapActivity.this, ProfileActivity.class);
                 startActivity(i);
 
             }
