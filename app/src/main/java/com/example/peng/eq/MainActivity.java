@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     public void addEvent(View view) {
         //send the hostid
         Intent intent = new Intent(this, AddEventActivity.class);
-        String hostId = "Xoxb8Adg7W";
+        String hostId = "HGqjFdtYZz";
         intent.putExtra(HOST_ID, hostId);
         startActivity(intent);
     }
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
     public void addEvent2(View view) {
         //send the hostid
         Intent intent = new Intent(this, addEvent2Activity.class);
-        String hostId = "Xoxb8Adg7W";
+        String hostId = "HGqjFdtYZz";
         intent.putExtra(HOST_ID, hostId);
         startActivity(intent);
     }
