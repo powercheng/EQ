@@ -110,7 +110,7 @@ public class AddEventActivity extends AppCompatActivity {
     }
 
     public void showDialogOnButtonClick() {
-//        date_btn = (TextView) findViewById(R.id.pick_date);
+        date_btn = (TextView) findViewById(R.id.pick_date);
         date_btn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {

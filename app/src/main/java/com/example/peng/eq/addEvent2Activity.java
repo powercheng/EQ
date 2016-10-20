@@ -3,6 +3,7 @@ package com.example.peng.eq;
 
 
 import android.app.*;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +20,13 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
+import com.parse.ParseObject;
+import com.parse.SaveCallback;
+
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -29,15 +36,20 @@ public class addEvent2Activity extends AppCompatActivity {
     int hour_x, minute_x, second_x;
     static final int DATE_ID = 0;
     static final int TIME_ID = 1;
-    TextView eventDate;
-    TextView eventTime;
-    EditText eventState;
+    private TextView eventDate;
+    private TextView eventTime;
+    private EditText eventState;
     private EditText street,city,state,zip;
+    private String hostId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event2);
+
+        Intent intent = getIntent();
+        hostId = intent.getStringExtra(MainActivity.HOST_ID);
+
         street = (EditText) findViewById(R.id.event_address);
         city = (EditText) findViewById(R.id.event_city);
         state = (EditText) findViewById(R.id.event_state);
@@ -65,7 +77,7 @@ public class addEvent2Activity extends AppCompatActivity {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count,
                                           int after) {
-                // TODO Auto-generated method stub
+                //TODO Auto-generated method stub
 
             }
 
@@ -105,10 +117,9 @@ public class addEvent2Activity extends AppCompatActivity {
     }
 
 
-
-
-    private void searchFromLocationName(String name) {
+    private List<Double> searchFromLocationName(String name) {
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        List<Double> res = new ArrayList<Double>();
         try {
             List<Address> result
                     = geocoder.getFromLocationName(name, 5);
@@ -117,16 +128,18 @@ public class addEvent2Activity extends AppCompatActivity {
                 Toast.makeText(addEvent2Activity.this,
                         "No matches were found or there is no backend service!",
                         Toast.LENGTH_LONG).show();
+            } else {
+                Address location = result.get(0);
+                double lati = location.getLatitude();
+                double longi = location.getLongitude();
+                res.add(lati);
+                res.add(longi);
             }
-            Address location = result.get(0);
-            double lati = location.getLatitude();
-            double longi = location.getLongitude();
-
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
+        return res;
     }
 
     public void addEventButtonOnclick(View view) {
@@ -191,16 +204,48 @@ public class addEvent2Activity extends AppCompatActivity {
 //            return;
         }
 
-        EditText event_description = (EditText) findViewById(R.id.event_description);
-        String streEvent_description = event_description.getText().toString();
-        if(TextUtils.isEmpty(streEvent_description)) {
-            event_description.setError("Please enter a description for the event!");
+        EditText eventDescription = (EditText) findViewById(R.id.event_description);
+        String strEventDescription = eventDescription.getText().toString();
+        if(TextUtils.isEmpty(strEventDescription)) {
+            eventDescription.setError("Please enter a description for the event!");
             hasError = true;
 //            return;
         }
-        if(hasError == false) {
+        if(!hasError) {
             String newAddress = street.getText().toString() + ", " + city.getText().toString() + ", " + state.getText().toString() + ", " + zip.getText().toString();
-            searchFromLocationName(newAddress);
+            List<Double> latlong = searchFromLocationName(newAddress);
+
+            if(latlong == null || latlong.size() == 0) {
+                street.setError("Please enter a valid address!");
+            } else {
+                //store info
+                double latitude, longitude;
+                latitude = latlong.get(0);
+                longitude = latlong.get(1);
+
+                ParseObject saveEventObj = new ParseObject("Event");
+                saveEventObj.put("title", strEventName);
+                saveEventObj.put("eventDate", strEventDate);
+                saveEventObj.put("eventTime", strEventTime);
+                saveEventObj.put("address", strEventAddress);
+                saveEventObj.put("description", strEventDescription);
+                saveEventObj.put("maxAttendNum", streEentMaxAttendee);
+                ParseGeoPoint eventLocation = new ParseGeoPoint(latitude, longitude);
+                saveEventObj.put("eventLocation", eventLocation);
+                ParseObject eventHost = ParseObject.createWithoutData("_User", hostId);
+                saveEventObj.put("hostId", eventHost);
+                saveEventObj.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if(e == null) {
+                            Toast.makeText(addEvent2Activity.this, "The event is successfully saved!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(addEvent2Activity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+
         }
     }
 
