@@ -197,8 +197,8 @@ public class addEvent2Activity extends AppCompatActivity {
         }
 
         EditText eventMaxAttendee = (EditText) findViewById(R.id.max_attendee);
-        String streEentMaxAttendee = eventMaxAttendee.getText().toString();
-        if(TextUtils.isEmpty(streEentMaxAttendee)) {
+        String streEventMaxAttendee = eventMaxAttendee.getText().toString();
+        if(TextUtils.isEmpty(streEventMaxAttendee)) {
             eventMaxAttendee.setError("Please enter a max number of attendees!");
             hasError = true;
 //            return;
@@ -229,7 +229,7 @@ public class addEvent2Activity extends AppCompatActivity {
                 saveEventObj.put("eventTime", strEventTime);
                 saveEventObj.put("address", strEventAddress);
                 saveEventObj.put("description", strEventDescription);
-                saveEventObj.put("maxAttendNum", streEentMaxAttendee);
+                saveEventObj.put("maxAttendNum", Integer.parseInt(streEventMaxAttendee));
                 ParseGeoPoint eventLocation = new ParseGeoPoint(latitude, longitude);
                 saveEventObj.put("eventLocation", eventLocation);
                 ParseObject eventHost = ParseObject.createWithoutData("_User", hostId);
