@@ -211,6 +211,14 @@ public class addEvent2Activity extends AppCompatActivity {
             hasError = true;
 //            return;
         }
+
+        EditText eventState = (EditText) findViewById(R.id.event_state);
+        String strEventState = eventState.getText().toString();
+        if(TextUtils.isEmpty(strEventState)) {
+            eventState.setError("Please enter the event date!");
+            hasError = true;
+        }
+
         if(!hasError) {
             String newAddress = street.getText().toString() + ", " + city.getText().toString() + ", " + state.getText().toString() + ", " + zip.getText().toString();
             List<Double> latlong = searchFromLocationName(newAddress);
@@ -227,7 +235,11 @@ public class addEvent2Activity extends AppCompatActivity {
                 saveEventObj.put("title", strEventName);
                 saveEventObj.put("eventDate", strEventDate);
                 saveEventObj.put("eventTime", strEventTime);
-                saveEventObj.put("address", strEventAddress);
+//                saveEventObj.put("address", strEventAddress);
+                saveEventObj.put("street", strEventAddress);
+                saveEventObj.put("city", strEventCity);
+                saveEventObj.put("zip", strEventZip);
+                saveEventObj.put("state", strEventState);
                 saveEventObj.put("description", strEventDescription);
                 saveEventObj.put("maxAttendNum", Integer.parseInt(streEventMaxAttendee));
                 ParseGeoPoint eventLocation = new ParseGeoPoint(latitude, longitude);
