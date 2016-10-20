@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:id="@+id/title"
+        android:id="@+id/event_name"
         android:imeOptions="actionDone"
         android:hint="Title"
         android:maxLength="100"/>
@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPostalAddress"
-        android:id="@+id/street"
+        android:id="@+id/event_address"
         android:imeOptions="actionDone"
         android:hint="Apt Street"
         android:maxLength="100"/>
@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="4"
             android:inputType="textPostalAddress"
-            android:id="@+id/city"
+            android:id="@+id/event_city"
             android:imeOptions="actionDone"
             android:hint="City" />
         <EditText
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:inputType="textCapCharacters"
-            android:id="@+id/state"
+            android:id="@+id/event_state"
             android:imeOptions="actionDone"
             android:hint="State"
             android:maxLength="2"
@@ -57,10 +57,11 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:inputType="number"
-            android:id="@+id/Zip"
+            android:id="@+id/event_zip"
             android:imeOptions="actionDone"
             android:hint="Zip"
-            android:maxLength="5"/>
+            android:maxLength="5"
+            />
 
     </LinearLayout>
     <LinearLayout
@@ -77,15 +78,16 @@
             android:gravity="center_vertical"
             android:textSize="20sp" />
 
-        <Button
+        <TextView
             android:hint="01/01/2016"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_vertical|right"
-            android:id="@+id/date"
+            android:id="@+id/event_date"
             android:textSize="20sp"
-            android:background="@color/map"/>
+            android:background="@color/map"
+            android:onClick="eventDateTextViewOnclick"/>
     </LinearLayout>
 
     <LinearLayout
@@ -102,15 +104,16 @@
             android:gravity="center_vertical"
             android:textSize="20sp" />
 
-        <Button
+        <TextView
             android:hint="00:00"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_vertical|right"
-            android:id="@+id/time"
+            android:id="@+id/event_time"
             android:textSize="20sp"
-            android:background="@color/map"/>
+            android:background="@color/map"
+            android:onClick="eventTimeTextViewOnclick"/>
 
     </LinearLayout>
 
@@ -119,27 +122,28 @@
         android:layout_height="wrap_content"
         android:inputType="number"
         android:layout_marginTop="15dp"
-        android:id="@+id/max"
+        android:id="@+id/max_attendee"
         android:imeOptions="actionDone"
-        android:hint="Max Attendees" />
+        android:hint="Max Attendee Number" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textMultiLine"
         android:lines="2"
-        android:id="@+id/description"
+        android:id="@+id/event_description"
         android:imeOptions="actionDone"
         android:hint="Description" />
 
     <Button
-        android:text="Submit"
+        android:text="Add"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:id="@+id/button3"
+        android:id="@+id/addEventButton"
         android:elevation="0dp"
         android:layout_gravity="center"
-        android:background="@drawable/mybuttonstyle"/>
+        android:background="@drawable/mybuttonstyle"
+        android:onClick="addEventButtonOnclick"/>
 
 
 
