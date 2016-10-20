@@ -56,7 +56,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="addEvent"
+        android:onClick="editEvent"
         android:text="event"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
