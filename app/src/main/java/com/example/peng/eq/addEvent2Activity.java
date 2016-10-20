@@ -268,11 +268,17 @@ public class addEvent2Activity extends AppCompatActivity {
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             hour_x = hourOfDay;
+            String ampm = "";
+            if(hour_x < 12) ampm = "AM";
+            else {
+                hour_x -= 12;
+                ampm = "PM";
+            }
             minute_x = minute;
             if(minute_x == 0)
-                eventTime.setText(hour_x + " : " + "00");
+                eventTime.setText(hour_x + " : " + "00" + " " + ampm);
             else
-                eventTime.setText(hour_x + " : " + minute_x);
+                eventTime.setText(hour_x + " : " + minute_x + " " + ampm);
             //Toast.makeText(AddEventActivity.this, hour_x + " : " + minute_x, Toast.LENGTH_SHORT).show();
         }
     };
