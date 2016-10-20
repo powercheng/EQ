@@ -15,5 +15,12 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <string-array name="spinner_values">
+        <item>Category</item>
+        <item>Sport</item>
+        <item>Club</item>
+        <item>Art</item>
+        <item>Study</item>
+    </string-array>
 
 </resources>
