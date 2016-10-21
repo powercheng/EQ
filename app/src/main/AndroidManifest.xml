@@ -73,6 +73,13 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
 
+        <activity
+            android:name=".ProfileActivity"
+            android:label="Profile"
+            android:parentActivityName=".MapActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/ToolbarTheme" />
+
         <activity android:name=".EditEventActivity"
             android:theme="@style/ToolbarTheme"
             android:parentActivityName=".MapActivity"

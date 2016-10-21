@@ -73,5 +73,12 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(HOST_ID, hostId);
         startActivity(intent);
     }
+
+    public void profile(View view){
+        Intent intent = new Intent(this, ProfileActivity.class);
+        String hostId = "HGqjFdtYZz";
+        intent.putExtra(HOST_ID, hostId);
+        startActivity(intent);
+    }
     //Cizhen 161008
 }
