@@ -76,13 +76,15 @@
         <activity
             android:name=".ProfileActivity"
             android:label="Profile"
-            android:parentActivityName=".MapActivity"
+            android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/ToolbarTheme" />
+            android:theme="@style/ToolbarTheme"
+            />
 
         <activity android:name=".EditEventActivity"
             android:theme="@style/ToolbarTheme"
             android:parentActivityName=".MapActivity"
+            android:screenOrientation="portrait"
             android:label="Edit Event"/>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

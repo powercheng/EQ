@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ProfileActivity extends Activity{
+public class ProfileActivity extends AppCompatActivity{
 
     private String hostId;
     private ListView upcommingEventListView;
@@ -79,7 +79,8 @@ public class ProfileActivity extends Activity{
                     for(ParseObject obj : objects) {
                         ParseObject eventObj = obj.getParseObject("eventId");
                         titleList[count] = eventObj.getString("title");
-                        holderList[count] = "i m a holder hahahahha";
+                        ParseObject holderObj = eventObj.getParseObject("hostId");
+                        holderList[count] = holderObj.getString("username");
                         dateList[count] = eventObj.getString("eventDate") + "   " + eventObj.getString("eventTime");
                         count++;
                     }
@@ -133,23 +134,5 @@ public class ProfileActivity extends Activity{
                 }
             }
         });
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        return super.onOptionsItemSelected(item);
     }
 }
