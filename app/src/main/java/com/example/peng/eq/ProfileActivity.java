@@ -1,5 +1,6 @@
 package com.example.peng.eq;
 
+import android.app.Activity;
 import android.app.Application;
 import android.app.TabActivity;
 import android.content.Intent;
@@ -10,11 +11,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.GetDataCallback;
 import com.parse.Parse;
@@ -24,10 +28,14 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-public class ProfileActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class ProfileActivity extends Activity{
 
     private String hostId;
-    TabHost tabHost;
+    private ListView upcommingEventListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +51,46 @@ public class ProfileActivity extends AppCompatActivity {
 
         //Tab 1
         TabHost.TabSpec spec = host.newTabSpec("Tab One");
-        spec.setContent(R.id.tab1);
+        spec.setContent(R.id.upcoming_event);
 //        spec.setContent(new Intent(this,UpcommingEvent.class));
         spec.setIndicator("Upcoming Events");
         host.addTab(spec);
+
+        // Find the ListView resource.
+        upcommingEventListView = (ListView) findViewById(R.id.upcoming_event);
+        // Create and populate a List of planet names.
+
+        // Set the ArrayAdapter as the ListView's adapter.
+
+        ParseQuery<ParseObject> queryUpcoming = ParseQuery.getQuery("EventConfirm");
+
+        ParseObject attendeeObj = ParseObject.createWithoutData("_User", hostId);
+        queryUpcoming.whereEqualTo("attendId", attendeeObj);
+        queryUpcoming.include("eventId");
+        queryUpcoming.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+
+                if(e == null) {
+                    String[] titleList = new String[objects.size()];
+                    String[] holderList = new String[objects.size()];
+                    String[] dateList = new String[objects.size()];
+                    int count = 0;
+                    for(ParseObject obj : objects) {
+                        ParseObject eventObj = obj.getParseObject("eventId");
+                        titleList[count] = eventObj.getString("title");
+                        holderList[count] = "i m a holder hahahahha";
+                        dateList[count] = eventObj.getString("eventDate") + "   " + eventObj.getString("eventTime");
+                        count++;
+                    }
+
+                    upcommingEventListView.setAdapter(new CustomAdapter(ProfileActivity.this, titleList, holderList, dateList));
+                } else {
+                    Toast.makeText(ProfileActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
 
         //Tab 2
         spec = host.newTabSpec("Tab Two");
@@ -105,18 +149,7 @@ public class ProfileActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        TextView t1 = (TextView)findViewById(R.id.text1);
-        TextView t2 = (TextView)findViewById(R.id.text2);
 
-        switch (id){
-            case 1:
-                t1.setVisibility(View.VISIBLE);
-                t2.setVisibility(View.GONE);
-                break;
-            case 2:
-                t2.setVisibility(View.VISIBLE);
-                t1.setVisibility(View.GONE);
-        }
         return super.onOptionsItemSelected(item);
     }
 }
