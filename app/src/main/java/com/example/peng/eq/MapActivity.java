@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.amulyakhare.textdrawable.TextDrawable;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
@@ -62,6 +63,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private List<Marker> art = new LinkedList<>();
     private List<Marker> club = new LinkedList<>();
     private List<Marker> other = new LinkedList<>();
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +84,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         toolbar.setOverflowIcon(upArrow);
 
 
+
         // ATTENTION: This "addApi(AppIndex.API)"was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -97,10 +100,31 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(final Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu_main,menu);
 
+        TextDrawable mdraw = TextDrawable.builder().beginConfig().width(30).height(30).endConfig().buildRect("A", Color.RED);
+        MenuItem item1 = menu.findItem(R.id.m);
+        item1.setIcon(mdraw);
+        item1.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("EventType");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+
+                for (int i = 0; i < objects.size(); i++) {
+                    String str = objects.get(i).getString("typeName");
+                    menu.add(Menu.NONE,i+9,Menu.NONE, str);
+                }
+                //progressDialog.dismiss();
+
+            }
+        });
+        this.menu = menu;
         return true;
     }
 
@@ -113,19 +137,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             case R.id.add_event:
                 Intent intent = new Intent(getBaseContext(), AddEventActivity.class);
                 startActivity(intent);
-            case R.id.sport:
-                setVisible(club,false);
+            case 9:
                 setVisible(sport,true);
-                setVisible(art,false);
                 return true;
-            case R.id.club:
+            case 10:
                 setVisible(club,true);
-                setVisible(sport,false);
-                setVisible(art,false);
                 return true;
-            case R.id.art:
-                setVisible(club,false);
-                setVisible(sport,false);
+            case 11:
                 setVisible(art,true);
                 return true;
             default:
@@ -205,25 +223,25 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     Marker m;
                     switch (title) {
                         case "club":
-                            Log.d("GPS", "" + 1);
+                            //Log.d("GPS", "" + 1);
                             m = mMap.addMarker(new MarkerOptions().position(temp).title("title")
                                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
                             club.add(m);
                             break;
                         case "sport":
-                            Log.d("GPS", "" + 2);
+                            //Log.d("GPS", "" + 2);
                             m = mMap.addMarker(new MarkerOptions().position(temp).title(title)
                                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
                             sport.add(m);
                             break;
                         case "art":
-                            Log.d("GPS", "" + 3);
+                            //Log.d("GPS", "" + 3);
                             m = mMap.addMarker(new MarkerOptions().position(temp).title(title)
                                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
                             art.add(m);
                             break;
                         default:
-                            Log.d("GPS", "" + 4);
+                           // Log.d("GPS", "" + 4);
                             m = mMap.addMarker(new MarkerOptions().position(temp).title("title")
                                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
                             other.add(m);

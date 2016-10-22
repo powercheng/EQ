@@ -12,7 +12,7 @@
         android:layout_height="150dp"
         android:background="@drawable/profilebg"
         android:layout_gravity="center">
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:background="@drawable/profileimage"

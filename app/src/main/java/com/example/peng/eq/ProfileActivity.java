@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -67,6 +68,7 @@ public class ProfileActivity extends AppCompatActivity{
         ParseObject attendeeObj = ParseObject.createWithoutData("_User", hostId);
         queryUpcoming.whereEqualTo("attendId", attendeeObj);
         queryUpcoming.include("eventId");
+
         queryUpcoming.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
@@ -79,8 +81,13 @@ public class ProfileActivity extends AppCompatActivity{
                     for(ParseObject obj : objects) {
                         ParseObject eventObj = obj.getParseObject("eventId");
                         titleList[count] = eventObj.getString("title");
-                        ParseObject holderObj = eventObj.getParseObject("hostId");
-                        holderList[count] = holderObj.getString("username");
+                        ParseUser holderObj = eventObj.getParseUser("hostId");
+                        try {
+                            holderList[count] = holderObj.fetchIfNeeded().getString("username");
+                        } catch (ParseException e1) {
+                            e1.printStackTrace();
+                        }
+                        Log.i("1","1");
                         dateList[count] = eventObj.getString("eventDate") + "   " + eventObj.getString("eventTime");
                         count++;
                     }
