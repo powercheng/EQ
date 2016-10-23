@@ -20,7 +20,7 @@
             android:layout_centerVertical="false"
             android:layout_marginTop="25dp"
             android:id="@+id/profile_image"
-            android:src="@mipmap/ic_launcher"/>
+            android:src="@drawable/defaultprofile"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

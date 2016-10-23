@@ -4,38 +4,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity" >
 
-    <item android:id="@+id/m"
+<!--    <item android:id="@+id/mon"
+        android:title="@string/title_add_event"
+        android:icon="@drawable/plus"
         android:orderInCategory="100"
-        android:title="m" />
-
-    <item android:id="@+id/t"
+        app:showAsAction="ifRoom"/>
+    <item android:id="@+id/tue"
+        android:title="@string/title_add_event"
+        android:icon="@drawable/plus"
         android:orderInCategory="100"
-        android:title="t" />
-
-    <item android:id="@+id/w"
-        android:orderInCategory="100"
-        android:title="w" />
-    <item android:id="@+id/th"
-        android:orderInCategory="100"
-        android:title="th" />
-    <item android:id="@+id/f"
+        app:showAsAction="ifRoom"/>
+    <item android:id="@+id/wen"
 
         android:orderInCategory="100"
-        android:title="f" />
-
-    <item android:id="@+id/s"
+        app:showAsAction="ifRoom"/>
+    <item android:id="@+id/thu"
         android:orderInCategory="100"
-        android:title="s" />
-
-    <item android:id="@+id/su"
-        android:orderInCategory="100"
-        android:title="su" />
+        app:showAsAction="ifRoom"/>-->
 
     <item android:id="@+id/add_event"
         android:title="@string/title_add_event"
         android:icon="@drawable/plus"
         android:orderInCategory="100"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/all"
+        android:title="all" />
 
 
 

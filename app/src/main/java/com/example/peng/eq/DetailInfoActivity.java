@@ -73,6 +73,8 @@ public class DetailInfoActivity extends AppCompatActivity implements OnMapReadyC
             eventId = intent.getStringExtra(MainActivity.EVENT_ID);
         } else if(previous.equals("CustomAdapter")) {
             eventId = intent.getStringExtra(CustomAdapter.EVENT_ID);
+        } else if (previous.equals("MapActivity")) {
+            eventId = intent.getStringExtra(MapActivity.EVENT_ID);
         }
 
 
@@ -175,25 +177,27 @@ public class DetailInfoActivity extends AppCompatActivity implements OnMapReadyC
 
                     //file object, still figuring out this part..
                     ParseFile fileObj = (ParseFile) object.get("image");
-                    fileObj.getDataInBackground(new GetDataCallback() {
-                        @Override
-                        public void done(byte[] data, ParseException e) {
-                            if (e == null) {
-                                // Decode the Byte[] into Bitmap
-                                Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+                    if(fileObj != null) {
+                        fileObj.getDataInBackground(new GetDataCallback() {
+                            @Override
+                            public void done(byte[] data, ParseException e) {
+                                if (e == null) {
+                                    // Decode the Byte[] into Bitmap
+                                    Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
 
-                                // initialize
-                                ImageView image = (ImageView) findViewById(R.id.event_image);
+                                    // initialize
+                                    ImageView image = (ImageView) findViewById(R.id.event_image);
 
-                                // Set the Bitmap into the ImageView
-                                image.setImageBitmap(bmp);
-                            } else {
-                                Log.d("test", "Problem load image the data.");
+                                    // Set the Bitmap into the ImageView
+                                    image.setImageBitmap(bmp);
+                                } else {
+                                    Log.d("test", "Problem load image the data.");
+                                }
+                                showProgress(false);
                             }
-                            showProgress(false);
-                        }
-                    });
-
+                        });
+                    }
+                    showProgress(false);
                 } else {
                     // something went wrong
                     Dialog.showDialog(e.toString(), "", DetailInfoActivity.this);
@@ -216,7 +220,7 @@ public class DetailInfoActivity extends AppCompatActivity implements OnMapReadyC
                 //remove the whole record in EventConfirm table
                 ParseQuery<ParseObject> queryConfirm = ParseQuery.getQuery("EventConfirm");
                 //should change to current user, if current user is null, should let them log in first
-                ParseObject obj = ParseObject.createWithoutData("_User", "Xoxb8Adg7W");
+                ParseObject obj = ParseObject.createWithoutData("_User", ParseUser.getCurrentUser().getObjectId());
                 queryConfirm.whereEqualTo("attendId", obj);
                 obj = ParseObject.createWithoutData("Event", eventId);
                 queryConfirm.whereEqualTo("eventId", obj);
@@ -259,7 +263,7 @@ public class DetailInfoActivity extends AppCompatActivity implements OnMapReadyC
 
                 //add record to EventConfirm table
                 ParseObject eventConfirmObj = new ParseObject("EventConfirm");
-                ParseObject obj = ParseObject.createWithoutData("_User", "Xoxb8Adg7W");
+                ParseObject obj = ParseObject.createWithoutData("_User", ParseUser.getCurrentUser().getObjectId());
                 //should change to current user
                 eventConfirmObj.put("attendId", obj);
                 obj = ParseObject.createWithoutData("Event", eventId);

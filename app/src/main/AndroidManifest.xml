@@ -37,7 +37,7 @@
             android:label="@string/title_activity_login"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme">
+            android:theme="@style/ToolbarTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
@@ -47,7 +47,7 @@
             android:label="@string/title_activity_signup"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme">
+            android:theme="@style/ToolbarTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
@@ -55,9 +55,9 @@
         <activity
             android:name=".DetailInfoActivity"
             android:label="@string/title_activity_detail"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".MapActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/ToolbarTheme" />
 
         <activity
             android:name=".AddEventActivity"
@@ -69,7 +69,7 @@
         <activity
             android:name=".addEvent2Activity"
             android:label="@string/title_add_event2"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".MapActivity"
             android:screenOrientation="portrait"
             android:theme="@style/ToolbarTheme" />
 
@@ -98,7 +98,7 @@
 
         <activity
             android:name=".MapActivity"
-            android:label=""
+            android:label="map"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <!--

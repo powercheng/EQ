@@ -5,13 +5,79 @@
     android:layout_height="match_parent">
 
     <android.support.v7.widget.Toolbar
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:theme="?attr/actionBarTheme"
         android:background="@color/map"
-        android:minHeight="?attr/actionBarSize"
-        android:id="@+id/toolbar" />
+        android:id="@+id/toolbar"
+        android:minHeight="0dp"
+        android:minWidth="20dip"
+        android:paddingRight="0dip"
+        android:paddingLeft="0dip"
+        />
 
+<!--
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:text="Mon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button16"
+            android:background="@drawable/mybuttonstyle2"
+            android:layout_weight="1" />
+
+        <Button
+            android:text="Tue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/mybuttonstyle2"
+            android:id="@+id/button15"
+            android:layout_weight="1" />
+
+        <Button
+            android:text="Wed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/mybuttonstyle2"
+            android:id="@+id/button14"
+            android:layout_weight="1" />
+
+        <Button
+            android:text="Thu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/mybuttonstyle2"
+            android:id="@+id/button13"
+            android:layout_weight="1" />
+
+        <Button
+            android:text="Fri"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/mybuttonstyle2"
+            android:id="@+id/button12"
+            android:layout_weight="1" />
+
+        <Button
+            android:text="Sat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/mybuttonstyle2"
+            android:id="@+id/button11"
+            android:layout_weight="1" />
+
+        <Button
+            android:text="Sun"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/mybuttonstyle2"
+            android:id="@+id/button10"
+            android:layout_weight="1" />
+    </LinearLayout>-->
 
     <fragment
         xmlns:map="http://schemas.android.com/apk/res-auto"

@@ -44,10 +44,15 @@ import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-
+import java.util.Locale;
+import java.util.Map;
 
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback,
@@ -59,17 +64,15 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     public static final String TAG = MapActivity.class.getSimpleName();
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private GoogleApiClient mGoogleApiClient;
-    private List<Marker> sport = new LinkedList<>();
-    private List<Marker> art = new LinkedList<>();
-    private List<Marker> club = new LinkedList<>();
-    private List<Marker> other = new LinkedList<>();
+    private Map<String,List<Marker>> mapType = new HashMap<>();
+    private Map<Marker,String> mapEvent = new HashMap<>();
     private Menu menu;
+    public final static String EVENT_ID = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.mipmap.connect48);
@@ -103,10 +106,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.menu_main,menu);
 
-        TextDrawable mdraw = TextDrawable.builder().beginConfig().width(30).height(30).endConfig().buildRect("A", Color.RED);
-        MenuItem item1 = menu.findItem(R.id.m);
-        item1.setIcon(mdraw);
-        item1.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("EventType");
@@ -116,7 +115,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
                 for (int i = 0; i < objects.size(); i++) {
                     String str = objects.get(i).getString("typeName");
-                    menu.add(Menu.NONE,i+9,Menu.NONE, str);
+                    menu.add(Menu.NONE,i+10,Menu.NONE, str);
                 }
                 //progressDialog.dismiss();
 
@@ -130,26 +129,27 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
-
-        switch (item.getItemId()) {
-            case R.id.add_event:
-                Intent intent = new Intent(getBaseContext(), AddEventActivity.class);
-                startActivity(intent);
-            case 9:
-                setVisible(sport,true);
-                return true;
-            case 10:
-                setVisible(club,true);
-                return true;
-            case 11:
-                setVisible(art,true);
-                return true;
-            default:
-                setVisible(club,true);
-                setVisible(sport,true);
-                setVisible(art,true);
-                return super.onOptionsItemSelected(item);
+        if(item.getTitle().equals("all")) {
+            for(String str : mapType.keySet()){
+                setVisible(mapType.get(str),true);
+            }
+            return true;
+        } else if(item.getTitle().equals("Add Event")) {
+            Intent i = new Intent(MapActivity.this, addEvent2Activity.class);
+            startActivity(i);
         }
+
+        else {
+            for (String str : mapType.keySet()) {
+                setVisible(mapType.get(str), false);
+            }
+            if (mapType.containsKey(item.getTitle())) {
+                setVisible(mapType.get(item.getTitle()), true);
+                return true;
+            }
+        }
+        return false;
+
     }
 
     private void setVisible(List<Marker> list, Boolean bool){
@@ -216,35 +216,57 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 for (int i = 0; i < objects.size(); i++) {
                     double tempLat = objects.get(i).getParseGeoPoint("eventLocation").getLatitude();
                     double tempLng = objects.get(i).getParseGeoPoint("eventLocation").getLongitude();
+                    String eventId = objects.get(i).getObjectId();
                     String title = objects.get(i).getString("title");
-                    LatLng temp = new LatLng(tempLat, tempLng);
-                    Marker m;
-                    switch (title) {
-                        case "club":
-                            //Log.d("GPS", "" + 1);
-                            m = mMap.addMarker(new MarkerOptions().position(temp).title("title")
-                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-                            club.add(m);
-                            break;
-                        case "sport":
-                            //Log.d("GPS", "" + 2);
-                            m = mMap.addMarker(new MarkerOptions().position(temp).title(title)
-                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
-                            sport.add(m);
-                            break;
-                        case "art":
-                            //Log.d("GPS", "" + 3);
-                            m = mMap.addMarker(new MarkerOptions().position(temp).title(title)
-                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-                            art.add(m);
-                            break;
-                        default:
-                           // Log.d("GPS", "" + 4);
-                            m = mMap.addMarker(new MarkerOptions().position(temp).title("title")
-                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-                            other.add(m);
-                            break;
+                    ParseObject type = objects.get(i).getParseObject("type");
+                    String typename = null;
+                    try {
+                        typename = type.fetchIfNeeded().getString("typeName");
+                    } catch (ParseException e1) {
+                        e1.printStackTrace();
                     }
+                    LatLng temp = new LatLng(tempLat, tempLng);
+                    Date date = objects.get(i).getDate("eventDateTime");
+                    String str = new SimpleDateFormat("E", Locale.US).format(date);
+                    Marker m;
+                    if (str.equals("Mon")){
+                        m = mMap.addMarker(new MarkerOptions().position(temp).title(title)
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                    }
+                    else if (str.equals("Tue")){
+                        m = mMap.addMarker(new MarkerOptions().position(temp).title(title)
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+                    }
+                    else if (str.equals("Wed")){
+                        m = mMap.addMarker(new MarkerOptions().position(temp).title(title)
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                    }
+                    else if (str.equals("Thu")){
+                        m = mMap.addMarker(new MarkerOptions().position(temp).title(title)
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
+                    }
+                    else if (str.equals("Fri")){
+                        m = mMap.addMarker(new MarkerOptions().position(temp).title(title)
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                    }
+                    else if (str.equals("Sat")){
+                        m = mMap.addMarker(new MarkerOptions().position(temp).title(title)
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)));
+                    } else {
+                        m = mMap.addMarker(new MarkerOptions().position(temp).title(title)
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+                    }
+                    if(mapType.containsKey(typename)) {
+                        mapType.get(typename).add(m);
+
+                    } else {
+                        List<Marker> list = new LinkedList<Marker>();
+                        list.add(m);
+                        mapType.put(typename,list);
+
+                    }
+                    mapEvent.put(m,eventId);
+
                 }
                 //progressDialog.dismiss();
 
@@ -257,7 +279,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
             @Override
             public void onInfoWindowClick(Marker arg0) {
-                Intent intent = new Intent(getBaseContext(), LoginActivity.class);
+                Intent intent = new Intent(getBaseContext(), DetailInfoActivity.class);
+                String str = mapEvent.get(arg0);
+                intent.putExtra(EVENT_ID,str);
+
+                intent.putExtra("from","MapActivity");
                 // Starting the  Activity
                 startActivity(intent);
             }

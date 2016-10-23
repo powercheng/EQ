@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.IOException;
@@ -53,7 +54,7 @@ public class addEvent2Activity extends AppCompatActivity {
         setContentView(R.layout.activity_add_event2);
 
         Intent intent = getIntent();
-        hostId = intent.getStringExtra(MainActivity.HOST_ID);
+        hostId = ParseUser.getCurrentUser().getObjectId();
 
         street = (EditText) findViewById(R.id.event_address);
         city = (EditText) findViewById(R.id.event_city);
@@ -221,7 +222,7 @@ public class addEvent2Activity extends AppCompatActivity {
 
         EditText eventState = (EditText) findViewById(R.id.event_state);
         String strEventState = eventState.getText().toString();
-        if(TextUtils.isEmpty(strEventState)) {
+        if(TextUtils.isEmpty(strEventState) || strEventState.length() != 2) {
             eventState.setError("Please set the event date");
             hasError = true;
 //            return;
@@ -280,6 +281,8 @@ public class addEvent2Activity extends AppCompatActivity {
                     public void done(ParseException e) {
                         if(e == null) {
                             Toast.makeText(addEvent2Activity.this, "The event is successfully saved!", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(addEvent2Activity.this, MapActivity.class);
+                            startActivity(intent);
                         } else {
                             Toast.makeText(addEvent2Activity.this, e.toString(), Toast.LENGTH_SHORT).show();
                         }

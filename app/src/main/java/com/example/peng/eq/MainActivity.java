@@ -44,10 +44,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void signup(View view) {
-        Intent intent = new Intent(this, MapActivity.class);
+        Intent intent = new Intent(this, SignupActivity.class);
         startActivity(intent);
     }
-
+/**
     //Cizhen 161008
     public void detail(View view) {
         //pass the objectid to the detamilInfoView
@@ -82,4 +82,5 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
     //Cizhen 161008
+**/
 }

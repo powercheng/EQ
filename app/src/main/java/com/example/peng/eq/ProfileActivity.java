@@ -52,7 +52,7 @@ public class ProfileActivity extends AppCompatActivity{
 
         //initialize variables
         Intent intent = getIntent();
-        hostId = intent.getStringExtra(MainActivity.HOST_ID);
+        hostId = ParseUser.getCurrentUser().getObjectId();
 
         TabHost host = (TabHost)findViewById(R.id.tabHost);
         host.setup();
@@ -93,6 +93,7 @@ public class ProfileActivity extends AppCompatActivity{
 
                     int countPast = 0;
                     int countUpcoming = 0;
+
                     for(ParseObject obj : objects) {
                         ParseObject eventObj = obj.getParseObject("eventId");
                         String eventId = eventObj.getObjectId();
@@ -193,18 +194,20 @@ public class ProfileActivity extends AppCompatActivity{
 
                     //get profile image
                     ParseFile fileObj = (ParseFile) object.get("profileImage");
-                    fileObj.getDataInBackground(new GetDataCallback() {
-                        @Override
-                        public void done(byte[] data, ParseException e) {
-                            if(e == null) {
-                                Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
-                                ImageView profileImage = (ImageView) findViewById(R.id.profile_image);
-                                profileImage.setImageBitmap(bmp);
-                            } else {
-                                Toast.makeText(ProfileActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                    if(fileObj != null) {
+                        fileObj.getDataInBackground(new GetDataCallback() {
+                            @Override
+                            public void done(byte[] data, ParseException e) {
+                                if (e == null) {
+                                    Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+                                    ImageView profileImage = (ImageView) findViewById(R.id.profile_image);
+                                    profileImage.setImageBitmap(bmp);
+                                } else {
+                                    Toast.makeText(ProfileActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
                 } else {
                     Toast.makeText(ProfileActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
                 }
