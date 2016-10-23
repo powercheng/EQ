@@ -29,7 +29,11 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -42,6 +46,8 @@ public class EditEventActivity extends AppCompatActivity {
     static final int DATE_ID = 0;
     static final int TIME_ID = 1;
     private EditText street,city,state,zip;
+    private String time;
+    private Date startDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +65,7 @@ public class EditEventActivity extends AppCompatActivity {
         state = (EditText) findViewById(R.id.event_state);
         zip = (EditText) findViewById(R.id.event_zip);
 
+        startDate = null;
         eventDate = (TextView) findViewById(R.id.event_date);
         eventTime = (TextView) findViewById(R.id.event_time);
         eventTime.addTextChangedListener(new TextWatcher() {
@@ -121,13 +128,15 @@ public class EditEventActivity extends AppCompatActivity {
                     EditText et = (EditText) findViewById(R.id.event_name);
                     et.setText(evetName);
 
-                    String eventDate = object.getString("eventDate");
+                    //set date and time
+                    Date eventDate = object.getDate("eventDateTime");
+                    DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+                    String strEventDate = df.format(eventDate);
+                    String[] ss = strEventDate.split(" ");
                     TextView t = (TextView) findViewById(R.id.event_date);
-                    t.setText(eventDate);
-
-                    String eventTime = object.getString("eventTime");
+                    t.setText(ss[0]);
                     t = (TextView) findViewById(R.id.event_time);
-                    t.setText(eventTime);
+                    t.setText(ss[1]);
 
                     String street = object.getString("street");
                     et = (EditText) findViewById(R.id.event_address);
@@ -236,6 +245,27 @@ public class EditEventActivity extends AppCompatActivity {
             hasError = true;
         }
 
+        //parse eventdatetime as Date format
+        DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+        String strEventDateAll = strEventDate + " " + time;
+//        Date startDate = null;
+        try {
+            startDate = df.parse(strEventDateAll);
+
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+        }
+
+        //for comparison, initialize today's date
+        Calendar today = Calendar.getInstance();
+        today.clear(Calendar.HOUR);
+        today.clear(Calendar.MINUTE);
+        today.clear(Calendar.SECOND);
+        Date todayDate = today.getTime();
+        if(!startDate.after(todayDate)){
+            hasError = true;
+            eventDate.setError("Please enter a future date/time!");
+        }
 
         if(!hasError) {
             String newAddress = street.getText().toString() + ", " + city.getText().toString() + ", " + state.getText().toString() + ", " + zip.getText().toString();
@@ -255,9 +285,8 @@ public class EditEventActivity extends AppCompatActivity {
                     @Override
                     public void done(ParseObject saveEventObj, ParseException e) {
                         if(e == null) {
+                            saveEventObj.put("eventDateTime",  startDate);
                             saveEventObj.put("title", strEventName);
-                            saveEventObj.put("eventDate", strEventDate);
-                            saveEventObj.put("eventTime", strEventTime);
                             saveEventObj.put("street", strEventAddress);
                             saveEventObj.put("city", strEventCity);
                             saveEventObj.put("zip", strEventZip);
@@ -284,8 +313,6 @@ public class EditEventActivity extends AppCompatActivity {
                         }
                     }
                 });
-//                ParseObject saveEventObj = new ParseObject("Event");
-
             }
 
         }
@@ -335,19 +362,32 @@ public class EditEventActivity extends AppCompatActivity {
             = new TimePickerDialog.OnTimeSetListener() {
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            time = "";
             hour_x = hourOfDay;
             String ampm = "";
-            if(hour_x < 12) ampm = "AM";
+//            String time = "";
+            if(hour_x < 12) {
+                time += "0" + hour_x;
+                ampm = "AM";
+            }
             else {
+                time += hour_x;
                 hour_x -= 12;
                 ampm = "PM";
             }
+            time += ":";
             minute_x = minute;
-            if(minute_x == 0)
+            if(minute_x == 0) {
                 eventTime.setText(hour_x + " : " + "00" + " " + ampm);
-            else
+                time += "00";
+            }
+            else if(minute_x < 10){
+
+                time += "0" + minute_x;
+            } else {
+                time += minute_x;
                 eventTime.setText(hour_x + " : " + minute_x + " " + ampm);
-            //Toast.makeText(AddEventActivity.this, hour_x + " : " + minute_x, Toast.LENGTH_SHORT).show();
+            }
         }
     };
 
@@ -355,10 +395,16 @@ public class EditEventActivity extends AppCompatActivity {
             = new DatePickerDialog.OnDateSetListener(){
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            String date = "";
             year_x = year;
             month_x = monthOfYear + 1;
             day_x = dayOfMonth;
-            eventDate.setText(year_x + "/" + month_x + "/" + day_x);
+            date += year_x + "/";
+            if(month_x < 10) date += "0" + month_x + "/";
+            else date += month_x + "/";
+            if(day_x < 10) date += "0" + day_x;
+            else date += day_x;
+            eventDate.setText(date);
             //Toast.makeText(AddEventActivity.this, year_x + " / " + month_x + " / " + day_x, Toast.LENGTH_LONG).show();
         }
     };

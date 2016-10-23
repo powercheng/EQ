@@ -2,6 +2,7 @@ package com.example.peng.eq;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -17,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.mediation.customevent.CustomEventAdapter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -39,6 +41,7 @@ import org.w3c.dom.Text;
 
 import java.net.URL;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -65,7 +68,13 @@ public class DetailInfoActivity extends AppCompatActivity implements OnMapReadyC
 
         //Cizhen 161008
         Intent intent = getIntent();
-        eventId = intent.getStringExtra(MainActivity.EVENT_ID);
+        String previous = intent.getStringExtra("from");
+        if(previous.equals("MainActivity")) {
+            eventId = intent.getStringExtra(MainActivity.EVENT_ID);
+        } else if(previous.equals("CustomAdapter")) {
+            eventId = intent.getStringExtra(CustomAdapter.EVENT_ID);
+        }
+
 
         showProgress(true);
 
@@ -125,10 +134,12 @@ public class DetailInfoActivity extends AppCompatActivity implements OnMapReadyC
                     t = (TextView) findViewById(R.id.event_address);
                     t.setText(address);
 
-                    String eventDate = object.getString("eventDate");
-                    String eventTime = object.getString("eventTime");
+                    Date eventDateTime = object.getDate("eventDateTime");
                     t = (TextView) findViewById(R.id.event_time);
-                    t.setText(eventDate + "           " + eventTime);
+                    DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+                    String strDateTime = df.format(eventDateTime);
+                    String[] ss = strDateTime.split(" ");
+                    t.setText(ss[0] + "    " + ss[1]);
 
                     int numberAttendee = object.getInt("attendNum");
                     t = (TextView) findViewById(R.id.event_attendees);
@@ -167,22 +178,15 @@ public class DetailInfoActivity extends AppCompatActivity implements OnMapReadyC
                     fileObj.getDataInBackground(new GetDataCallback() {
                         @Override
                         public void done(byte[] data, ParseException e) {
-
                             if (e == null) {
-                                // Decode the Byte[] into
-                                // Bitmap
-                                Bitmap bmp = BitmapFactory
-                                        .decodeByteArray(
-                                                data, 0,
-                                                data.length);
+                                // Decode the Byte[] into Bitmap
+                                Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
 
                                 // initialize
                                 ImageView image = (ImageView) findViewById(R.id.event_image);
 
-                                // Set the Bitmap into the
-                                // ImageView
+                                // Set the Bitmap into the ImageView
                                 image.setImageBitmap(bmp);
-
                             } else {
                                 Log.d("test", "Problem load image the data.");
                             }

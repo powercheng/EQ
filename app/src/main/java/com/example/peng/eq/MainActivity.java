@@ -53,15 +53,16 @@ public class MainActivity extends AppCompatActivity {
         //pass the objectid to the detamilInfoView
         Intent intent = new Intent(this, DetailInfoActivity.class);
 
-        String eventId = "vG6L293QyB";
+        String eventId = "lJVFt0pEtn";
         intent.putExtra(EVENT_ID, eventId);
-        startActivity(intent);
+        intent.putExtra("from", "MainActivity");
+        startActivityForResult(intent, 1);
     }
 
     public void editEvent(View view) {
         //send the hostid
         Intent intent = new Intent(this, EditEventActivity.class);
-        String eventId = "iTKDIBZWwR";
+        String eventId = "HgYsGhz2X7";
         intent.putExtra(EVENT_ID, eventId);
         startActivity(intent);
     }

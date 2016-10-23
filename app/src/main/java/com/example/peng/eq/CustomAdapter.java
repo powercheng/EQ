@@ -1,6 +1,9 @@
 package com.example.peng.eq;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +11,8 @@ import android.widget.BaseAdapter;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.net.PortUnreachableException;
 
 /**
  * Created by cizhenwu on 10/21/16.
@@ -18,14 +23,20 @@ public class CustomAdapter extends BaseAdapter{
     private String[] holders;
     private String[] dates;
     private static LayoutInflater inflater=null;
+
     Context context;
 
-    public CustomAdapter(ProfileActivity profileActivity, String[]titleList, String[] holderList, String[] dateList) {
+    private String[] eventIds;
+    static public String EVENT_ID;
+
+
+    public CustomAdapter(ProfileActivity profileActivity, String[] eventIdList, String[]titleList, String[] holderList, String[] dateList) {
         titles = titleList;
         holders = holderList;
         dates = dateList;
         context = profileActivity;
         inflater = ( LayoutInflater )context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        eventIds = eventIdList;
     }
 
     @Override
@@ -49,6 +60,12 @@ public class CustomAdapter extends BaseAdapter{
         TextView holderView;
         TextView dateView;
     }
+//
+//    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+    }
+
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -67,7 +84,17 @@ public class CustomAdapter extends BaseAdapter{
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                Toast.makeText(context, "You Clicked "+ titles[position], Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(context, DetailInfoActivity.class);
+
+                intent.putExtra(EVENT_ID, eventIds[position]);
+                intent.putExtra("from", "CustomAdapter");
+                context.startActivity(intent);
+
+//                context.startActivity(new Intent(this, DetailInfoActivity.class).putExtra("from" , "previousActivity"));
+
+
+                //go to detail info
+                Toast.makeText(context, "You Clicked "+ eventIds[position], Toast.LENGTH_LONG).show();
             }
         });
         return rowView;

@@ -64,14 +64,14 @@
             android:label="@string/title_add_event"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/ToolbarTheme" />
 
         <activity
             android:name=".addEvent2Activity"
             android:label="@string/title_add_event2"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/ToolbarTheme" />
 
         <activity android:name=".EditEventActivity"
             android:theme="@style/ToolbarTheme"

@@ -83,8 +83,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         final Drawable upArrow = getResources().getDrawable(R.drawable.arrow24);
         toolbar.setOverflowIcon(upArrow);
 
-
-
         // ATTENTION: This "addApi(AppIndex.API)"was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         mGoogleApiClient = new GoogleApiClient.Builder(this)

@@ -32,4 +32,6 @@
     <string-array name="spinner_values">
         <item>Category</item>
     </string-array>
+
+    <string name="simple_date_format">yyyy/MM/dd Hh:mm</string>
 </resources>
