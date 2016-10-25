@@ -6,6 +6,9 @@ import android.app.TabActivity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TabHost;
@@ -28,7 +32,10 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -45,6 +52,11 @@ public class ProfileActivity extends AppCompatActivity{
     private ListView eventHistoryView;
     private ListView myEventsView;
     private String thisUser;
+    static final int CAM_REQUEST = 1;
+    private ImageView imageView;
+    private Button confirmChangeIamge;
+    private File imageFile;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +80,10 @@ public class ProfileActivity extends AppCompatActivity{
         upcommingEventListView = (ListView) findViewById(R.id.upcoming_event);
         myEventsView = (ListView) findViewById(R.id.my_event);
         eventHistoryView = (ListView) findViewById(R.id.event_history);
+        imageView = (ImageView) findViewById(R.id.profile_image);
+        confirmChangeIamge = (Button) findViewById(R.id.confirm_change_image);
+        confirmChangeIamge.setVisibility(View.GONE);
+
 
         //perform query to search for event information
         ParseQuery<ParseObject> queryConfirm = ParseQuery.getQuery("EventConfirm");
@@ -210,8 +226,8 @@ public class ProfileActivity extends AppCompatActivity{
                             public void done(byte[] data, ParseException e) {
                                 if (e == null) {
                                     Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
-                                    ImageView profileImage = (ImageView) findViewById(R.id.profile_image);
-                                    profileImage.setImageBitmap(bmp);
+//                                    ImageView profileImage = (ImageView) findViewById(R.id.profile_image);
+                                    imageView.setImageBitmap(bmp);
                                 } else {
                                     Toast.makeText(ProfileActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
                                 }
@@ -276,5 +292,69 @@ public class ProfileActivity extends AppCompatActivity{
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
 //        String aa = "";
+    }
+
+    public void changeImage(View view) {
+        Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        File file = getFile();
+        imageFile = file;
+        camera_intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+        startActivityForResult(camera_intent, CAM_REQUEST);
+    }
+
+    private File getFile() {
+        File folder = new File("sdcard/camera_app");
+        if(!folder.exists()) {
+            folder.mkdir();
+        }
+
+        File image_file = new File(folder, "cam_image.jpg");
+        return image_file;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        String path = "sdcard/camera_app/cam_image.jpg";
+        imageView.setImageDrawable(Drawable.createFromPath(path));
+        confirmChangeIamge.setVisibility(View.VISIBLE);
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void confirmChangeImage(View view) {
+        //upload the image to database
+        final ParseUser currentUser = ParseUser.getCurrentUser();
+        imageView.buildDrawingCache();
+        Bitmap bitmap = imageView.getDrawingCache();
+
+        // Convert it to byte
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        // Compress image to lower quality scale 1 - 100
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] image = stream.toByteArray();
+
+        // Create the ParseFile
+        final ParseFile file = new ParseFile("cam_image.jpg", image);
+        file.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if(e == null) {
+                    currentUser.put("profileImage", file);
+                    currentUser.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException ex) {
+                            if(ex == null) {
+                                confirmChangeIamge.setVisibility(View.GONE);
+                            } else {
+                                Toast.makeText(ProfileActivity.this, "Oops, there's an error when saving your information.", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                } else {
+                    Toast.makeText(ProfileActivity.this, "Oops, there's an error when saving your information.", Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        });
+
     }
 }

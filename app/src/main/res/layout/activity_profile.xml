@@ -20,7 +20,20 @@
             android:layout_centerVertical="false"
             android:layout_marginTop="15dp"
             android:id="@+id/profile_image"
-            android:src="@drawable/defaultprofile"/>
+            android:src="@drawable/defaultprofile"
+            android:onClick="changeImage"/>
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:layout_toRightOf="@+id/profile_image"
+            android:layout_marginTop="60dp"
+            android:text="Confirm"
+            android:textSize="10dp"
+            android:background="@drawable/mybuttonstyle"
+            android:textColor="@color/white"
+            android:id="@+id/confirm_change_image"
+            android:visibility="gone"
+            android:onClick="confirmChangeImage"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
