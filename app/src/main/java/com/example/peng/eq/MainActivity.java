@@ -33,6 +33,12 @@ public class MainActivity extends AppCompatActivity {
         View decorView = getWindow().getDecorView();
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
+
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if(currentUser != null) {
+            Intent intent = new Intent(this, MapActivity.class);
+            startActivity(intent);
+        }
     }
 
     public void login(View view) {

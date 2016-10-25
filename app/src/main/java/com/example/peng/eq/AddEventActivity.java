@@ -58,7 +58,7 @@ public class AddEventActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
 
-        mProgressView = findViewById(R.id.progress_bar);
+//        mProgressView = findViewById(R.id.progress_bar);
         Intent intent = getIntent();
         hostId = intent.getStringExtra(MainActivity.HOST_ID);
 

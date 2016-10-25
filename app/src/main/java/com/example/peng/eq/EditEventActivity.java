@@ -58,7 +58,13 @@ public class EditEventActivity extends AppCompatActivity {
 
 
         //initialize variables
-        eventId = intent.getStringExtra(MainActivity.EVENT_ID);
+//        String previous = intent.getStringExtra("from");
+//        if(previous.equals("DetailInfoActivity")) {
+        eventId = intent.getStringExtra(DetailInfoActivity.EVENT_ID);
+//        } else {
+//            eventId = intent.getStringExtra(MainActivity.EVENT_ID);
+//        }
+
 
         street = (EditText) findViewById(R.id.event_address);
         city = (EditText) findViewById(R.id.event_city);

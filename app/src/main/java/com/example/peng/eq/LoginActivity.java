@@ -439,10 +439,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             ParseUser.requestPasswordResetInBackground(email, new RequestPasswordResetCallback() {
                                 public void done(ParseException e) {
                                     if (e == null) {
-                                        Dialog.showDialog("","check your email to reset password",LoginActivity.this);
+                                        Dialog.showDialog("","Please check your email to reset password.",LoginActivity.this);
                                     } else {
                                         // Something went wrong. Look at the ParseException to see what's up.
-                                        Dialog.showDialog("","the email didn't register",LoginActivity.this);
+                                        Dialog.showDialog("","This email has not been registered.",LoginActivity.this);
                                     }
                                 }
                             });

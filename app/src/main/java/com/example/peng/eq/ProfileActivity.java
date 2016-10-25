@@ -81,15 +81,15 @@ public class ProfileActivity extends AppCompatActivity{
                 if(e == null) {
                     //now, we get all dataset for the current user
                     //we then need to group them into different groups by comparing date ONLY so far
-                    String[] eventIdUpcoming = new String[objects.size()];
-                    String[] titleListUpcoming = new String[objects.size()];
-                    String[] holderListUpcoming  = new String[objects.size()];
-                    String[] dateListUpcoming  = new String[objects.size()];
+                    List<String> eventIdUpcoming = new ArrayList<String>();
+                    List<String> titleListUpcoming = new ArrayList<String>();
+                    List<String> holderListUpcoming  = new ArrayList<String>();
+                    List<String> dateListUpcoming  = new ArrayList<String>();
 
-                    String[] eventIdPast = new String[objects.size()];
-                    String[] titleListPast = new String[objects.size()];
-                    String[] holderListPast  = new String[objects.size()];
-                    String[] dateListPast  = new String[objects.size()];
+                    List<String> eventIdPast = new ArrayList<String>();
+                    List<String> titleListPast = new ArrayList<String>();
+                    List<String> holderListPast  = new ArrayList<String>();
+                    List<String> dateListPast  = new ArrayList<String>();
 
                     int countPast = 0;
                     int countUpcoming = 0;
@@ -115,19 +115,19 @@ public class ProfileActivity extends AppCompatActivity{
                             username = user.fetchIfNeeded().getString("username");
                             if(todayDate.after(eventDate)) {
                                 //for past events
-                                eventIdPast[countPast] = eventId;
-                                titleListPast[countPast] = eventName;
-                                holderListPast[countPast] = username;
-                                dateListPast[countPast] = strDate;
+                                eventIdPast.add(eventId);
+                                titleListPast.add(eventName);
+                                holderListPast.add(username);
+                                dateListPast.add(strDate);
                                 countPast++;
 
 //                            Toast.makeText(ProfileActivity.this, "past", Toast.LENGTH_SHORT).show();
                             } else {
                                 //for upcoming events
-                                eventIdUpcoming[countUpcoming] = eventId;
-                                titleListUpcoming[countUpcoming] = eventName;
-                                holderListUpcoming[countUpcoming] = username;
-                                dateListUpcoming[countUpcoming] = strDate;
+                                eventIdUpcoming.add(eventId);
+                                titleListUpcoming.add(eventName);
+                                holderListUpcoming.add(username);
+                                dateListUpcoming.add(strDate);
                                 countUpcoming++;
 //                            Toast.makeText(ProfileActivity.this, "upcoming", Toast.LENGTH_SHORT).show();
                             }
@@ -142,9 +142,19 @@ public class ProfileActivity extends AppCompatActivity{
                     }
 
                     upcommingEventListView.setAdapter(new CustomAdapter(
-                            ProfileActivity.this, eventIdUpcoming, titleListUpcoming, holderListUpcoming, dateListUpcoming));
-                    eventHistoryView.setAdapter(new CustomAdapter(ProfileActivity.this,
-                            eventIdPast, titleListPast, holderListPast, dateListPast));
+                            ProfileActivity.this,
+                            eventIdUpcoming.toArray(new String[eventIdUpcoming.size()]),
+                            titleListUpcoming.toArray(new String[titleListUpcoming.size()]),
+                            holderListUpcoming.toArray(new String[holderListUpcoming.size()]),
+                            dateListUpcoming.toArray(new String[dateListUpcoming.size()]))
+                    );
+                    eventHistoryView.setAdapter(new CustomAdapter(
+                            ProfileActivity.this,
+                            eventIdPast.toArray(new String[eventIdPast.size()]),
+                            titleListPast.toArray(new String[titleListPast.size()]),
+                            holderListPast.toArray(new String[holderListPast.size()]),
+                            dateListPast.toArray(new String[dateListPast.size()]))
+                    );
 
                 } else {
                     Toast.makeText(ProfileActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
@@ -224,10 +234,10 @@ public class ProfileActivity extends AppCompatActivity{
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
                 if(e == null) {
-                    String[] titleListAll = new String[objects.size()];
-                    String[] holderListAll  = new String[objects.size()];
-                    String[] dateListAll  = new String[objects.size()];
-                    String[] eventIdListAll = new String[objects.size()];
+                    List<String> titleListAll = new ArrayList<String>();
+                    List<String> holderListAll  = new ArrayList<String>();
+                    List<String> dateListAll  = new ArrayList<String>();
+                    List<String> eventIdListAll = new ArrayList<String>();
 
                     int count = 0;
                     for(ParseObject obj : objects) {
@@ -240,20 +250,31 @@ public class ProfileActivity extends AppCompatActivity{
 
                         String eventName = obj.getString("title");
 
-                        eventIdListAll[count] = eventId;
-                        titleListAll[count] = eventName;
-                        holderListAll[count] = thisUser;
-                        dateListAll[count] = strDate;
+                        eventIdListAll.add(eventId);
+                        titleListAll.add(eventName);
+                        holderListAll.add(thisUser);
+                        dateListAll.add(strDate);
 
                         count++;
                     }
 
-
                     myEventsView.setAdapter(new CustomAdapter(
-                            ProfileActivity.this, eventIdListAll, titleListAll, holderListAll, dateListAll));
-
+                            ProfileActivity.this,
+                            eventIdListAll.toArray(new String[eventIdListAll.size()]),
+                            titleListAll.toArray(new String[titleListAll.size()]),
+                            holderListAll.toArray(new String[holderListAll.size()]),
+                            dateListAll.toArray(new String[dateListAll.size()]))
+                    );
                 }
             }
         });
+    }
+
+    public void logout(View view) {
+        ParseUser.logOut();
+        ParseUser user = ParseUser.getCurrentUser();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+//        String aa = "";
     }
 }

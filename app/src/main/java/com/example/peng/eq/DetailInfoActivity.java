@@ -51,6 +51,7 @@ public class DetailInfoActivity extends AppCompatActivity implements OnMapReadyC
     private String eventId;
     private GoogleMap mMap;
     double tempLat, tempLong;
+    public static String EVENT_ID = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +65,7 @@ public class DetailInfoActivity extends AppCompatActivity implements OnMapReadyC
         mapFragment.getMapAsync(this);
 
 
-        mProgressView = findViewById(R.id.progress_bar);
+//        mProgressView = findViewById(R.id.progress_bar);
 
         //Cizhen 161008
         Intent intent = getIntent();
@@ -78,15 +79,15 @@ public class DetailInfoActivity extends AppCompatActivity implements OnMapReadyC
         }
 
 
-        showProgress(true);
+//        showProgress(true);
 
         //check if current user has attended the event, show cancel button
         //if not, show go button
-        ParseUser currentUser = ParseUser.getCurrentUser();
+        final ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
             // do stuff with the user
             ParseUser user = ParseUser.getCurrentUser();
-            ParseQuery<ParseObject> queryConfirm = ParseQuery.getQuery("EventConfirm");
+            final ParseQuery<ParseObject> queryConfirm = ParseQuery.getQuery("EventConfirm");
 
             //to query pointer
             ParseObject obj = ParseObject.createWithoutData("_User", user.getObjectId());
@@ -97,26 +98,48 @@ public class DetailInfoActivity extends AppCompatActivity implements OnMapReadyC
                 @Override
                 public void done(List<ParseObject> objects, ParseException e) {
                     if(e == null) {
+                        final Button btnCancel = (Button) findViewById(R.id.cancel_event);
+                        final Button btnGO = (Button) findViewById(R.id.attend_event);
+                        final Button btnEdit = (Button) findViewById(R.id.edit_event);
+
                         if(objects.size() != 0) {
                             //there exists an attending state of the current user
                             //display cancel buttun
-                            Button btnGO = (Button) findViewById(R.id.attend_event);
+//                            Button btnGO = (Button) findViewById(R.id.attend_event);
                             btnGO.setVisibility(View.GONE);
-                            Button btnCancel = (Button) findViewById(R.id.cancel_event);
+//                            Button btnCancel = (Button) findViewById(R.id.cancel_event);
                             btnCancel.setVisibility(View.VISIBLE);
                         }else {
-                            Button btnCancel = (Button) findViewById(R.id.cancel_event);
-                            btnCancel.setVisibility(View.GONE);
-                            Button btnGO = (Button) findViewById(R.id.attend_event);
-                            btnGO.setVisibility(View.VISIBLE);
-//                            btnGO.setEnabled(false);
+                            //search event table
+                            ParseQuery<ParseObject> queryEvent = ParseQuery.getQuery("Event");
+                            queryEvent.getInBackground(eventId, new GetCallback<ParseObject>() {
+                                @Override
+                                public void done(ParseObject object, ParseException e) {
+                                    ParseUser host = object.getParseUser("hostId");
+                                    try {
+                                        String hostEmail = host.fetchIfNeeded().getEmail();
+                                        String currentUserEmail = currentUser.fetchIfNeeded().getEmail();
+                                        if(!hostEmail.equals(currentUserEmail)) {
+                                            btnCancel.setVisibility(View.GONE);
+                                            btnGO.setVisibility(View.VISIBLE);
+                                            btnEdit.setVisibility(View.GONE);
+                                        } else {
+                                            //the host of the event can not attend his event
+                                            btnEdit.setVisibility(View.VISIBLE);
+                                            btnCancel.setVisibility(View.GONE);
+                                            btnGO.setVisibility(View.GONE);
+                                        }
+                                    } catch (ParseException e1) {
+                                        e1.printStackTrace();
+                                    }
+                                }
+                            });
                         }
                     }else {
 
                     }
                 }
             });
-
         } else {
 
         }
@@ -132,7 +155,7 @@ public class DetailInfoActivity extends AppCompatActivity implements OnMapReadyC
                     TextView t = (TextView) findViewById(R.id.event_name);
                     t.setText(title);
 
-                    String address = object.getString("address");
+                    String address = object.getString("street") + ", " + object.getString("city") + ", " + object.getString("state") + ", " + object.getString("zip");
                     t = (TextView) findViewById(R.id.event_address);
                     t.setText(address);
 
@@ -193,11 +216,11 @@ public class DetailInfoActivity extends AppCompatActivity implements OnMapReadyC
                                 } else {
                                     Log.d("test", "Problem load image the data.");
                                 }
-                                showProgress(false);
+//                                showProgress(false);
                             }
                         });
                     }
-                    showProgress(false);
+//                    showProgress(false);
                 } else {
                     // something went wrong
                     Dialog.showDialog(e.toString(), "", DetailInfoActivity.this);
@@ -207,8 +230,15 @@ public class DetailInfoActivity extends AppCompatActivity implements OnMapReadyC
         //Cizhen 161008
     }
 
+    public void editEvent(View view) {
+        Intent intent = new Intent(this, EditEventActivity.class);
+        intent.putExtra("from", "DetailInfoActivity");
+        intent.putExtra(EVENT_ID, eventId);
+        startActivity(intent);
+    }
+
     public void cancel(final View view) {
-        showProgress(true);
+//        showProgress(true);
         //increment attendee by one to the event
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Event");
         query.getInBackground(eventId, new GetCallback<ParseObject>(){
@@ -242,7 +272,7 @@ public class DetailInfoActivity extends AppCompatActivity implements OnMapReadyC
                                 TextView t = (TextView) findViewById(R.id.event_attendees);
 //                                int a = object.getInt("attendNum");
                                 t.setText(Integer.toString(object.getInt("attendNum")) + " people are going");
-                                showProgress(false);
+//                                showProgress(false);
                             }
                         }
                     }
@@ -252,7 +282,7 @@ public class DetailInfoActivity extends AppCompatActivity implements OnMapReadyC
     }
 
     public void attend(final View view){
-        showProgress(true);
+//        showProgress(true);
         //increment attendee by one to the event
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Event");
         query.getInBackground(eventId, new GetCallback<ParseObject>(){
@@ -286,22 +316,22 @@ public class DetailInfoActivity extends AppCompatActivity implements OnMapReadyC
 //                t.setText(object.getInt("attendNum"));
                 // view.invalidate();
 
-                showProgress(false);
+//                showProgress(false);
             }
         });
     }
-
-    private void showProgress(final boolean show) {
-        int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-        mProgressView.animate().setDuration(shortAnimTime).alpha(
-                show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            }
-        });
-    }
+//
+//    private void showProgress(final boolean show) {
+//        int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+//        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+//        mProgressView.animate().setDuration(shortAnimTime).alpha(
+//                show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+//            @Override
+//            public void onAnimationEnd(Animator animation) {
+//                mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+//            }
+//        });
+//    }
 
 
     //Cizhen 161008

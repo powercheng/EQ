@@ -94,7 +94,7 @@ public class CustomAdapter extends BaseAdapter{
 
 
                 //go to detail info
-                Toast.makeText(context, "You Clicked "+ eventIds[position], Toast.LENGTH_LONG).show();
+//                Toast.makeText(context, "You Clicked "+ eventIds[position], Toast.LENGTH_LONG).show();
             }
         });
         return rowView;
