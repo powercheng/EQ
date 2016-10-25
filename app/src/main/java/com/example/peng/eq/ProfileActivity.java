@@ -315,8 +315,12 @@ public class ProfileActivity extends AppCompatActivity{
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         String path = "sdcard/camera_app/cam_image.jpg";
-        imageView.setImageDrawable(Drawable.createFromPath(path));
-        confirmChangeIamge.setVisibility(View.VISIBLE);
+        if(requestCode == CAM_REQUEST) {
+            if (resultCode == Activity.RESULT_OK) {
+                imageView.setImageDrawable(Drawable.createFromPath(path));
+                confirmChangeIamge.setVisibility(View.VISIBLE);
+            }
+        }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -344,6 +348,7 @@ public class ProfileActivity extends AppCompatActivity{
                         public void done(ParseException ex) {
                             if(ex == null) {
                                 confirmChangeIamge.setVisibility(View.GONE);
+                                Toast.makeText(ProfileActivity.this, "Your image has been saved.", Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(ProfileActivity.this, "Oops, there's an error when saving your information.", Toast.LENGTH_SHORT).show();
                             }

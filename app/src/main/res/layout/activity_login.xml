@@ -88,7 +88,7 @@
                 <Button
                     android:id="@+id/email_sign_in_button"
                     style="?android:textAppearanceSmall"
-                    android:layout_width="100dp"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginBottom="0dp"

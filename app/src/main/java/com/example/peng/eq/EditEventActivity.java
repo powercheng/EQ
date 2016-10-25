@@ -2,19 +2,26 @@ package com.example.peng.eq;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -22,12 +29,15 @@ import android.widget.Toast;
 import com.google.android.gms.vision.text.Text;
 import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -39,7 +49,6 @@ import java.util.Locale;
 
 public class EditEventActivity extends AppCompatActivity {
     private String eventId;
-    private View mProgressView;
     private TextView eventTime, eventDate;
     private int year_x, month_x, day_x;
     private int hour_x, minute_x, second_x;
@@ -48,6 +57,10 @@ public class EditEventActivity extends AppCompatActivity {
     private EditText street,city,state,zip;
     private String time;
     private Date startDate;
+    private ImageView imageView;
+    private final static int CAM_REQUEST = 1;
+    private File imageFile;
+    private static boolean imageHasChanged = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,22 +69,15 @@ public class EditEventActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-
-        //initialize variables
-//        String previous = intent.getStringExtra("from");
-//        if(previous.equals("DetailInfoActivity")) {
+        //initialize variables and views
         eventId = intent.getStringExtra(DetailInfoActivity.EVENT_ID);
-//        } else {
-//            eventId = intent.getStringExtra(MainActivity.EVENT_ID);
-//        }
-
-
         street = (EditText) findViewById(R.id.event_address);
         city = (EditText) findViewById(R.id.event_city);
         state = (EditText) findViewById(R.id.event_state);
         zip = (EditText) findViewById(R.id.event_zip);
 
         startDate = null;
+        imageView = (ImageView) findViewById(R.id.event_image);
         eventDate = (TextView) findViewById(R.id.event_date);
         eventTime = (TextView) findViewById(R.id.event_time);
         eventTime.addTextChangedListener(new TextWatcher() {
@@ -119,10 +125,6 @@ public class EditEventActivity extends AppCompatActivity {
                 }
             }
         });
-
-//        mProgressView = findViewById(R.id.progress_bar);
-
-//        showProgress(true);
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Event");
         query.include("hostId");
@@ -253,10 +255,9 @@ public class EditEventActivity extends AppCompatActivity {
 
         //parse eventdatetime as Date format
         DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-        String strEventDateAll = strEventDate + " " + time;
-//        Date startDate = null;
+
         try {
-            startDate = df.parse(strEventDateAll);
+            startDate = df.parse(strEventDate + " " + strEventTime);
 
         } catch (java.text.ParseException e) {
             e.printStackTrace();
@@ -286,42 +287,82 @@ public class EditEventActivity extends AppCompatActivity {
                 longitude = latlong.get(1);
 
                 //update current event
-                ParseQuery<ParseObject> query = ParseQuery.getQuery("Event");
-                query.getInBackground(eventId, new GetCallback<ParseObject>() {
-                    @Override
-                    public void done(ParseObject saveEventObj, ParseException e) {
-                        if(e == null) {
-                            saveEventObj.put("eventDateTime",  startDate);
-                            saveEventObj.put("title", strEventName);
-                            saveEventObj.put("street", strEventAddress);
-                            saveEventObj.put("city", strEventCity);
-                            saveEventObj.put("zip", strEventZip);
-                            saveEventObj.put("state", strEventState);
-                            saveEventObj.put("description", strEventDescription);
-                            saveEventObj.put("maxAttendNum", Integer.parseInt(streEventMaxAttendee));
-                            ParseGeoPoint eventLocation = new ParseGeoPoint(latitude, longitude);
-                            saveEventObj.put("eventLocation", eventLocation);
-                            //no need update hostId
-        //                ParseObject eventHost = ParseObject.createWithoutData("_User", hostId);
-        //                saveEventObj.put("hostId", eventHost);
-                            saveEventObj.saveInBackground(new SaveCallback() {
-                                @Override
-                                public void done(ParseException e) {
-                                    if(e == null) {
-                                        Toast.makeText(EditEventActivity.this, "The event is successfully saved!", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        Toast.makeText(EditEventActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
-                        } else {
+                imageView.buildDrawingCache();
+                Bitmap bitmap = imageView.getDrawingCache();
+                // Convert it to byte
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                // Compress image to lower quality scale 1 - 100
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] image = stream.toByteArray();
 
+                // Create the ParseFile
+                final ParseFile file = new ParseFile("cam_image.jpg", image);
+                if(imageHasChanged) {
+                    file.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if(e == null) {
+                                updateEvent(strEventName, strEventAddress, strEventCity,
+                                        strEventZip, strEventState,strEventDescription,
+                                        streEventMaxAttendee, latitude, longitude, file);
+                                Toast.makeText(EditEventActivity.this, "Event information has been saved.", Toast.LENGTH_SHORT).show();
+                                //go back to mapscreen
+                                Intent i = new Intent(EditEventActivity.this, MapActivity.class);
+                                startActivity(i);
+                            } else {
+                                Toast.makeText(EditEventActivity.this, "Oops, there's an error when saving event information", Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
-                });
+                    });
+
+                } else {
+                    updateEvent(strEventName, strEventAddress, strEventCity,
+                            strEventZip, strEventState,strEventDescription,
+                            streEventMaxAttendee, latitude, longitude, file);
+                }
             }
 
         }
+    }
+
+    private void updateEvent(final String strEventName, final String strEventAddress,
+                             final String strEventCity, final String strEventZip,
+                             final String strEventState, final String strEventDescription,
+                             final String streEventMaxAttendee, final double latitude,
+                             final double longitude, final ParseFile file) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Event");
+        query.getInBackground(eventId, new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject saveEventObj, ParseException e) {
+                if(e == null) {
+                    saveEventObj.put("eventDateTime",  startDate);
+                    saveEventObj.put("title", strEventName);
+                    saveEventObj.put("street", strEventAddress);
+                    saveEventObj.put("city", strEventCity);
+                    saveEventObj.put("zip", strEventZip);
+                    saveEventObj.put("state", strEventState);
+                    saveEventObj.put("description", strEventDescription);
+                    saveEventObj.put("maxAttendNum", Integer.parseInt(streEventMaxAttendee));
+                    ParseGeoPoint eventLocation = new ParseGeoPoint(latitude, longitude);
+                    saveEventObj.put("eventLocation", eventLocation);
+                    if(imageHasChanged) {
+                        saveEventObj.put("image", file);
+                    }
+                    saveEventObj.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if(e == null) {
+                                Toast.makeText(EditEventActivity.this, "The event is successfully saved!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(EditEventActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                } else {
+                    Toast.makeText(EditEventActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private List<Double> searchFromLocationName(String name) {
@@ -424,15 +465,35 @@ public class EditEventActivity extends AppCompatActivity {
         showDialog(DATE_ID);
     }
 
-    private void showProgress(final boolean show) {
-        int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-        mProgressView.animate().setDuration(shortAnimTime).alpha(
-                show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+
+    public void changeImage(View view) {
+        Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        File file = getFile();
+        imageFile = file;
+        camera_intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+        startActivityForResult(camera_intent, CAM_REQUEST);
+    }
+
+    private File getFile() {
+        File folder = new File("sdcard/camera_app");
+        if(!folder.exists()) {
+            folder.mkdir();
+        }
+
+        File image_file = new File(folder, "cam_image.jpg");
+        return image_file;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        String path = "sdcard/camera_app/cam_image.jpg";
+        if(requestCode == CAM_REQUEST) {
+            if (resultCode == Activity.RESULT_OK) {
+                imageView.setImageDrawable(Drawable.createFromPath(path));
+//                confirmChangeIamge.setVisibility(View.VISIBLE);
+                imageHasChanged = true;
             }
-        });
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

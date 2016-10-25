@@ -1,26 +1,14 @@
 package com.example.peng.eq;
-
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import com.google.android.gms.ads.mediation.customevent.CustomEventAdapter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -31,26 +19,17 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.GetDataCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.RequestPasswordResetCallback;
-
-import org.w3c.dom.Text;
-
-import java.io.File;
-import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class DetailInfoActivity extends AppCompatActivity implements OnMapReadyCallback {
-    private View mProgressView;
     private String eventId;
     private GoogleMap mMap;
     double tempLat, tempLong;
@@ -67,9 +46,6 @@ public class DetailInfoActivity extends AppCompatActivity implements OnMapReadyC
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-
-//        mProgressView = findViewById(R.id.progress_bar);
-
         //Cizhen 161008
         Intent intent = getIntent();
         String previous = intent.getStringExtra("from");
@@ -80,9 +56,6 @@ public class DetailInfoActivity extends AppCompatActivity implements OnMapReadyC
         } else if (previous.equals("MapActivity")) {
             eventId = intent.getStringExtra(MapActivity.EVENT_ID);
         }
-
-
-//        showProgress(true);
 
         //check if current user has attended the event, show cancel button
         //if not, show go button
@@ -315,58 +288,13 @@ public class DetailInfoActivity extends AppCompatActivity implements OnMapReadyC
                 TextView t = (TextView) findViewById(R.id.event_attendees);
                 t.setText(Integer.toString(object.getInt("attendNum"))+ " people are going");
 
-
-//                t.setText(object.getInt("attendNum"));
-                // view.invalidate();
-
-//                showProgress(false);
             }
         });
     }
-//
-//    private void showProgress(final boolean show) {
-//        int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-//        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-//        mProgressView.animate().setDuration(shortAnimTime).alpha(
-//                show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-//            @Override
-//            public void onAnimationEnd(Animator animation) {
-//                mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-//            }
-//        });
-//    }
-
 
     //Cizhen 161008
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-//        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            // TODO: Consider calling
-//            //    ActivityCompat#requestPermissions
-//            // here to request the missing permissions, and then overriding
-//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//            //                                          int[] grantResults)
-//            // to handle the case where the user grants the permission. See the documentation
-//            // for ActivityCompat#requestPermissions for more details.
-//            return;
-//        }
-//        mMap.setMyLocationEnabled(true);
-        // Add a marker in Sydney and move the camera
-/*        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));*/
     }
 }
-
-//
-//public class DownloadImageTask extends AsyncTask {
-//    @Override
-//    protected Bitmap doInBackground(String... urls) {
-//        return loadImageFromNetwork(urls[0]);
-//    }
-//
-//    protected void onPostExecute(Bitmap result) {
-//        mImageView.setImageBitmap(result);
-//    }
-//}
