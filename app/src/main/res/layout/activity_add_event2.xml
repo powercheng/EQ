@@ -24,7 +24,6 @@
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:entries="@array/spinner_values"
         style="@style/Base.Widget.AppCompat.Spinner.Underlined"
         android:tag="Category"
         android:id="@+id/spinner" />

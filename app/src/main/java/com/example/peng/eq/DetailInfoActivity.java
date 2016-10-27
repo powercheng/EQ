@@ -4,7 +4,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -56,6 +58,8 @@ public class DetailInfoActivity extends AppCompatActivity implements OnMapReadyC
         } else if (previous.equals("MapActivity")) {
             eventId = intent.getStringExtra(MapActivity.EVENT_ID);
         }
+
+
 
         //check if current user has attended the event, show cancel button
         //if not, show go button
@@ -206,10 +210,17 @@ public class DetailInfoActivity extends AppCompatActivity implements OnMapReadyC
         //Cizhen 161008
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
     public void editEvent(View view) {
         Intent intent = new Intent(this, EditEventActivity.class);
         intent.putExtra("from", "DetailInfoActivity");
         intent.putExtra(EVENT_ID, eventId);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
     }
 
@@ -296,5 +307,26 @@ public class DetailInfoActivity extends AppCompatActivity implements OnMapReadyC
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        this.finish();
     }
 }

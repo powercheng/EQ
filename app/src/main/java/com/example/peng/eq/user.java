@@ -1,6 +1,14 @@
 package com.example.peng.eq;
 
+import com.parse.FindCallback;
 import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by peng on 10/10/2016.
@@ -8,6 +16,8 @@ import com.parse.Parse;
 
 public class user extends android.app.Application {
 
+    public static String[] type;
+    public static Map<String,String> map = new HashMap<>();
 
     @Override
     public void onCreate() {
@@ -20,6 +30,21 @@ public class user extends android.app.Application {
                 .server("https://parseapi.back4app.com/").build()
         );
 
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("EventType");
+        query.findInBackground(new FindCallback<ParseObject>() {
+
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+
+                type = new String[objects.size()];
+                for(int i = 0; i< objects.size();i++) {
+                    type[i] = objects.get(i).getString("typeName");
+                    map.put(type[i],objects.get(i).getObjectId());
+                }
+                //progressDialog.dismiss();
+
+            }
+        });
     }
 
 }

@@ -12,17 +12,22 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.Menu;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -47,6 +52,8 @@ public class addEvent2Activity extends AppCompatActivity {
     private String hostId;
     private String time;
     private String date;
+    private Spinner s;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,10 +63,19 @@ public class addEvent2Activity extends AppCompatActivity {
         Intent intent = getIntent();
         hostId = ParseUser.getCurrentUser().getObjectId();
 
+
+
+        s = (Spinner) findViewById(R.id.spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, user.type);
+        s.setAdapter(adapter);
+
+
         street = (EditText) findViewById(R.id.event_address);
         city = (EditText) findViewById(R.id.event_city);
         state = (EditText) findViewById(R.id.event_state);
         zip = (EditText) findViewById(R.id.event_zip);
+
 
         final Calendar cal = Calendar.getInstance();
         year_x = cal.get(Calendar.YEAR);
@@ -275,6 +291,10 @@ public class addEvent2Activity extends AppCompatActivity {
                 ParseGeoPoint eventLocation = new ParseGeoPoint(latitude, longitude);
                 saveEventObj.put("eventLocation", eventLocation);
                 ParseObject eventHost = ParseObject.createWithoutData("_User", hostId);
+                String typeId = user.map.get(s.getSelectedItem().toString());
+                ParseObject eventType = ParseObject.createWithoutData("EventType", typeId);
+                saveEventObj.put("type",eventType);
+
                 saveEventObj.put("hostId", eventHost);
                 saveEventObj.saveInBackground(new SaveCallback() {
                     @Override

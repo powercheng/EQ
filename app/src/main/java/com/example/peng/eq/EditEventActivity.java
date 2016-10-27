@@ -7,27 +7,35 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
+import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.vision.text.Text;
+import com.parse.DeleteCallback;
 import com.parse.GetCallback;
+import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
@@ -61,6 +69,7 @@ public class EditEventActivity extends AppCompatActivity {
     private final static int CAM_REQUEST = 1;
     private File imageFile;
     private static boolean imageHasChanged = false;
+    private Spinner s;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +77,12 @@ public class EditEventActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_event);
 
         Intent intent = getIntent();
+
+
+        s = (Spinner) findViewById(R.id.spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, user.type);
+        s.setAdapter(adapter);
 
         //initialize variables and views
         eventId = intent.getStringExtra(DetailInfoActivity.EVENT_ID);
@@ -169,6 +184,29 @@ public class EditEventActivity extends AppCompatActivity {
                     String description = object.getString("description");
                     et = (EditText)findViewById(R.id.event_description);
                     et.setText(description);
+
+                    //file object, still figuring out this part..
+                    ParseFile fileObj = (ParseFile) object.get("image");
+                    if(fileObj != null) {
+                        fileObj.getDataInBackground(new GetDataCallback() {
+                            @Override
+                            public void done(byte[] data, ParseException e) {
+                                if (e == null) {
+                                    // Decode the Byte[] into Bitmap
+                                    Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+
+                                    // initialize
+                                    ImageView image = (ImageView) findViewById(R.id.event_image);
+
+                                    // Set the Bitmap into the ImageView
+                                    image.setImageBitmap(bmp);
+                                } else {
+                                    Log.d("test", "Problem load image the data.");
+                                }
+//                                showProgress(false);
+                            }
+                        });
+                    }
 
                 }else {
                     Dialog.showDialog("Oops..", "There happens an error when searching for the event", EditEventActivity.this);
@@ -345,6 +383,9 @@ public class EditEventActivity extends AppCompatActivity {
                     saveEventObj.put("maxAttendNum", Integer.parseInt(streEventMaxAttendee));
                     ParseGeoPoint eventLocation = new ParseGeoPoint(latitude, longitude);
                     saveEventObj.put("eventLocation", eventLocation);
+                    String typeId = user.map.get(s.getSelectedItem().toString());
+                    ParseObject eventType = ParseObject.createWithoutData("EventType", typeId);
+                    saveEventObj.put("type",eventType);
                     if(imageHasChanged) {
                         saveEventObj.put("image", file);
                     }
@@ -495,5 +536,47 @@ public class EditEventActivity extends AppCompatActivity {
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onBackPressed() {
+        NavUtils.navigateUpFromSameTask(this);
+
+    }
+
+    private Boolean exit = false;
+    public void CancelEventButtonOnclick(View view) {
+        if (exit) {
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("Event");
+            query.getInBackground(eventId, new GetCallback<ParseObject>() {
+                @Override
+                public void done(ParseObject object, ParseException e) {
+                    if(e == null) {
+                        object.deleteInBackground(new DeleteCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if(e == null) {
+                                    Intent i = new Intent(EditEventActivity.this,MapActivity.class);
+                                    finish();
+                                    startActivity(i);
+                                }
+                            }
+                        });
+
+                    }
+                }
+            });
+        } else {
+            Toast.makeText(this, "Press Cancel again to cancel event.",
+                    Toast.LENGTH_SHORT).show();
+            exit = true;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    exit = false;
+                }
+            }, 3 * 1000);
+
+        }
     }
 }

@@ -22,11 +22,17 @@
         android:orderInCategory="100"
         app:showAsAction="ifRoom"/>-->
 
+    <item android:id="@+id/calender"
+        android:title="calender"
+        android:icon="@drawable/weekdayselector"
+        android:orderInCategory="100"
+        app:showAsAction="always"/>
+
     <item android:id="@+id/add_event"
         android:title="@string/title_add_event"
         android:icon="@drawable/plus"
         android:orderInCategory="100"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always"/>
 
     <item android:id="@+id/all"
         android:title="all" />

@@ -16,68 +16,76 @@
         android:paddingLeft="0dip"
         />
 
-<!--
     <LinearLayout
+        android:id="@+id/buttons"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="40dp"
+        android:visibility="gone">
 
         <Button
             android:text="Mon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/button16"
-            android:background="@drawable/mybuttonstyle2"
+            android:id="@+id/button1"
+            android:background="@drawable/red"
+            android:onClick="button1"
             android:layout_weight="1" />
 
         <Button
             android:text="Tue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/mybuttonstyle2"
-            android:id="@+id/button15"
+            android:id="@+id/button2"
+            android:background="@drawable/orange"
+            android:onClick="button2"
             android:layout_weight="1" />
 
         <Button
             android:text="Wed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/mybuttonstyle2"
-            android:id="@+id/button14"
+            android:background="@drawable/yellow"
+            android:id="@+id/button3"
+            android:onClick="button3"
             android:layout_weight="1" />
 
         <Button
             android:text="Thu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/mybuttonstyle2"
-            android:id="@+id/button13"
+            android:background="@drawable/green"
+            android:id="@+id/button4"
+            android:onClick="button4"
             android:layout_weight="1" />
 
         <Button
             android:text="Fri"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/mybuttonstyle2"
-            android:id="@+id/button12"
+            android:background="@drawable/cyan"
+            android:id="@+id/button5"
+            android:onClick="button5"
             android:layout_weight="1" />
 
         <Button
             android:text="Sat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/mybuttonstyle2"
-            android:id="@+id/button11"
+            android:background="@drawable/blue"
+            android:id="@+id/button6"
+            android:onClick="button6"
             android:layout_weight="1" />
 
         <Button
             android:text="Sun"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/mybuttonstyle2"
-            android:id="@+id/button10"
+            android:background="@drawable/violet"
+            android:id="@+id/button7"
+            android:onClick="button7"
             android:layout_weight="1" />
-    </LinearLayout>-->
+    </LinearLayout>
 
     <fragment
         xmlns:map="http://schemas.android.com/apk/res-auto"

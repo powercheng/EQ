@@ -11,6 +11,7 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Handler;
+import android.support.annotation.DrawableRes;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -20,6 +21,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.amulyakhare.textdrawable.TextDrawable;
@@ -47,12 +50,15 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback,
@@ -64,16 +70,56 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     public static final String TAG = MapActivity.class.getSimpleName();
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private GoogleApiClient mGoogleApiClient;
-    private Map<String,List<Marker>> mapType = new HashMap<>();
+    private Map<String,List<Marker>> mapType;
+    private Map<String,List<Marker>> mapDayType;
+    private List<Marker> list1,list2,list3,list4,list5,list6,list7;
     private Map<Marker,String> mapEvent = new HashMap<>();
     private Menu menu;
     public final static String EVENT_ID = "";
+    private Button button1,button2,button3,button4,button5,button6,button7;
+    boolean bool1,bool2,bool3,bool4,bool5,bool6,bool7;
+    private LinearLayout buttons;
+    private Set<String> set = new HashSet<>();
+    private String choseType;
+    private List<MarkerObj> markers = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+
+
+        buttons = (LinearLayout) findViewById(R.id.buttons);
+        bool1 = false;
+        bool2 = false;
+        bool3 = false;
+        bool4 = false;
+        bool5 = false;
+        bool6 = false;
+        bool7 = false;
+        button1 = (Button) findViewById(R.id.button1);
+        button2 = (Button) findViewById(R.id.button2);
+        button3 = (Button) findViewById(R.id.button3);
+        button4 = (Button) findViewById(R.id.button4);
+        button5 = (Button) findViewById(R.id.button5);
+        button6 = (Button) findViewById(R.id.button6);
+        button7 = (Button) findViewById(R.id.button7);
+
+        set.add("Mon");
+        set.add("Tue");
+        set.add("Wed");
+        set.add("Thu");
+        set.add("Fri");
+        set.add("Sat");
+        set.add("Sun");
+
+        choseType = "all";
+
+
+
+
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.mipmap.connect48);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -83,6 +129,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
             }
         });
+
         final Drawable upArrow = getResources().getDrawable(R.drawable.arrow24);
         toolbar.setOverflowIcon(upArrow);
 
@@ -108,7 +155,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
 
 
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("EventType");
+/*        ParseQuery<ParseObject> query = ParseQuery.getQuery("EventType");
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
@@ -120,41 +167,150 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 //progressDialog.dismiss();
 
             }
-        });
+        });*/
+        for(int i = 0; i < user.type.length;i++){
+            menu.add(Menu.NONE,i+10,Menu.NONE, user.type[i]);
+        }
         this.menu = menu;
         return true;
     }
 
+  //  public void button1
 //qqqqq
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         if(item.getTitle().equals("all")) {
-            for(String str : mapType.keySet()){
-                setVisible(mapType.get(str),true);
-            }
+            choseType = "all";
+            setVisible();
             return true;
         } else if(item.getTitle().equals("Add Event")) {
             Intent i = new Intent(MapActivity.this, addEvent2Activity.class);
             startActivity(i);
+            return true;
+        } else if(item.getTitle().equals("calender")) {
+            if(buttons.getVisibility() == View.VISIBLE)
+                buttons.setVisibility(View.GONE);
+            else
+                buttons.setVisibility(View.VISIBLE);
+            return true;
+        } else {
+            choseType = item.getTitle().toString();
+            setVisible();
+            return true;
         }
-
-        else {
-            for (String str : mapType.keySet()) {
-                setVisible(mapType.get(str), false);
-            }
-            if (mapType.containsKey(item.getTitle())) {
-                setVisible(mapType.get(item.getTitle()), true);
-                return true;
-            }
-        }
-        return false;
 
     }
+    public void button1(View view){
+        if(bool1) {
+            button1.setBackground(getResources().getDrawable(R.drawable.red));
+            set.add("Mon");
+            bool1 = false;
+        } else {
+            button1.setBackgroundColor(getResources().getColor(R.color.red));
+            set.remove("Mon");
+            bool1 = true;
+        }
+        setVisible();
+    }
 
-    private void setVisible(List<Marker> list, Boolean bool){
-        for(Marker m : list) {
-            m.setVisible(bool);
+    public void button2(View view){
+        if(bool2) {
+            button2.setBackground(getResources().getDrawable(R.drawable.orange));
+            set.add("Tue");
+            bool2 = false;
+        } else {
+            button2.setBackgroundColor(getResources().getColor(R.color.orange));
+            set.remove("Tue");
+            bool2 = true;
+        }
+        setVisible();
+    }
+    public void button3(View view){
+        if(bool3) {
+            button3.setBackground(getResources().getDrawable(R.drawable.yellow));
+            set.add("Wed");
+            bool3 = false;
+        } else {
+            button3.setBackgroundColor(getResources().getColor(R.color.yellow));
+            set.remove("Wed");
+            bool3 = true;
+        }
+        setVisible();
+    }
+    public void button4(View view){
+        if(bool4) {
+            button4.setBackground(getResources().getDrawable(R.drawable.green));
+            set.add("Thu");
+            bool4 = false;
+        } else {
+            button4.setBackgroundColor(getResources().getColor(R.color.green));
+            set.remove("Thu");
+            bool4 = true;
+        }
+        setVisible();
+    }
+    public void button5(View view){
+        if(bool5) {
+            button5.setBackground(getResources().getDrawable(R.drawable.cyan));
+            set.add("Fri");
+            bool5 = false;
+        } else {
+            button5.setBackgroundColor(getResources().getColor(R.color.cyan));
+            set.remove("Fri");
+            bool5 = true;
+        }
+        setVisible();
+    }
+    public void button6(View view){
+        if(bool6) {
+            button6.setBackground(getResources().getDrawable(R.drawable.blue));
+            set.add("Sat");
+            bool6 = false;
+        } else {
+            button6.setBackgroundColor(getResources().getColor(R.color.blue));
+            set.remove("Sat");
+            bool6 = true;
+        }
+        setVisible();
+    }
+
+    public void button7(View view){
+        if(bool7) {
+            button7.setBackground(getResources().getDrawable(R.drawable.violet));
+            set.add("Sun");
+            bool7 = false;
+        } else {
+            button7.setBackgroundColor(getResources().getColor(R.color.violet));
+            set.remove("Sun");
+            bool7 = true;
+        }
+        setVisible();
+    }
+
+
+    private void setVisible(){
+        if(choseType.equals("all")){
+            for(MarkerObj m : markers) {
+                if(set.contains(m.getDay())) {
+                    m.getMarker().setVisible(true);
+                } else {
+                    m.getMarker().setVisible(false);
+                }
+            }
+        }
+        else {
+            for(MarkerObj m : markers) {
+                if(m.getType().equals(choseType)) {
+                    if(set.contains(m.getDay())) {
+                        m.getMarker().setVisible(true);
+                    } else {
+                        m.getMarker().setVisible(false);
+                    }
+                } else {
+                    m.getMarker().setVisible(false);
+                }
+            }
         }
     }
     /**
@@ -203,6 +359,23 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private void handleNewLocation(Location location) {
         double currentLatitude = location.getLatitude();
         double currentLongitude = location.getLongitude();
+        mapType = new HashMap<>();
+        mapDayType = new HashMap<>();
+
+        list1 = new ArrayList<>();
+        list2 = new ArrayList<>();
+        list3 = new ArrayList<>();
+        list4 = new ArrayList<>();
+        list5 = new ArrayList<>();
+        list6 = new ArrayList<>();
+        list7 = new ArrayList<>();
+        mapDayType.put("Mon",list1);
+        mapDayType.put("Tue",list2);
+        mapDayType.put("Wed",list3);
+        mapDayType.put("Thu",list4);
+        mapDayType.put("Fri",list5);
+        mapDayType.put("Sat",list6);
+        mapDayType.put("Sun",list7);
 
         ParseGeoPoint findLocation = new ParseGeoPoint(currentLatitude, currentLongitude);
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Event");
@@ -231,31 +404,41 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     Marker m;
                     if (str.equals("Mon")){
                         m = mMap.addMarker(new MarkerOptions().position(temp).title(title)
-                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+
+
                     }
                     else if (str.equals("Tue")){
                         m = mMap.addMarker(new MarkerOptions().position(temp).title(title)
-                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
                     }
                     else if (str.equals("Wed")){
                         m = mMap.addMarker(new MarkerOptions().position(temp).title(title)
-                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
                     }
                     else if (str.equals("Thu")){
                         m = mMap.addMarker(new MarkerOptions().position(temp).title(title)
-                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
                     }
                     else if (str.equals("Fri")){
                         m = mMap.addMarker(new MarkerOptions().position(temp).title(title)
-                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
                     }
                     else if (str.equals("Sat")){
                         m = mMap.addMarker(new MarkerOptions().position(temp).title(title)
-                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)));
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
                     } else {
                         m = mMap.addMarker(new MarkerOptions().position(temp).title(title)
-                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
                     }
+
+                    MarkerObj markerobj = new MarkerObj(m,str,typename);
+                    markers.add(markerobj);
+                    mapEvent.put(m,eventId);
+
+
+                    /*mapDayType.get(str).add(m);
+
                     if(mapType.containsKey(typename)) {
                         mapType.get(typename).add(m);
 
@@ -265,7 +448,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         mapType.put(typename,list);
 
                     }
-                    mapEvent.put(m,eventId);
+                    mapEvent.put(m,eventId);*/
 
                 }
                 //progressDialog.dismiss();
@@ -293,7 +476,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     @Override
     public void onConnected(Bundle bundle) {
-        Log.i(TAG, "Location services connected.");
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -316,7 +498,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     @Override
     public void onConnectionSuspended(int i) {
-        Log.i(TAG, "Location services suspended. Please reconnect.");
     }
 
     @Override

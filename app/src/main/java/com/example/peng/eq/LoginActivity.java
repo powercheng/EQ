@@ -114,6 +114,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEdit.setFocusable(false);
         mEdit.setClickable(true);
 
+
+
         //getActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
@@ -475,8 +477,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        this.finish();
     }
     //Cizhen 161008
 }
