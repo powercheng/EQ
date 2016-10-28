@@ -3,21 +3,28 @@ package com.example.peng.eq;
 import android.app.Activity;
 import android.app.Application;
 import android.app.TabActivity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -44,6 +51,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class ProfileActivity extends AppCompatActivity{
 
@@ -56,11 +64,17 @@ public class ProfileActivity extends AppCompatActivity{
     private ImageView imageView;
     private Button confirmChangeIamge;
     private File imageFile;
+    AlphaAnimation inAnimation;
+    AlphaAnimation outAnimation;
+    FrameLayout progressBarHolder;
+    LinearLayout entirePage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+
 
         //initialize variables
         Intent intent = getIntent();
@@ -83,8 +97,10 @@ public class ProfileActivity extends AppCompatActivity{
         imageView = (ImageView) findViewById(R.id.profile_image);
         confirmChangeIamge = (Button) findViewById(R.id.confirm_change_image);
         confirmChangeIamge.setVisibility(View.GONE);
+        progressBarHolder = (FrameLayout) findViewById(R.id.progressBarHolder);
+        entirePage = (LinearLayout) findViewById(R.id.entire_page);
 
-
+//        showProgressBar(true);
         //perform query to search for event information
         ParseQuery<ParseObject> queryConfirm = ParseQuery.getQuery("EventConfirm");
         ParseObject attendeeObj = ParseObject.createWithoutData("_User", hostId);
@@ -106,9 +122,6 @@ public class ProfileActivity extends AppCompatActivity{
                     List<String> titleListPast = new ArrayList<String>();
                     List<String> holderListPast  = new ArrayList<String>();
                     List<String> dateListPast  = new ArrayList<String>();
-
-                    int countPast = 0;
-                    int countUpcoming = 0;
 
                     for(ParseObject obj : objects) {
                         ParseObject eventObj = obj.getParseObject("eventId");
@@ -135,22 +148,13 @@ public class ProfileActivity extends AppCompatActivity{
                                 titleListPast.add(eventName);
                                 holderListPast.add(username);
                                 dateListPast.add(strDate);
-                                countPast++;
-
-//                            Toast.makeText(ProfileActivity.this, "past", Toast.LENGTH_SHORT).show();
                             } else {
                                 //for upcoming events
                                 eventIdUpcoming.add(eventId);
                                 titleListUpcoming.add(eventName);
                                 holderListUpcoming.add(username);
                                 dateListUpcoming.add(strDate);
-                                countUpcoming++;
-//                            Toast.makeText(ProfileActivity.this, "upcoming", Toast.LENGTH_SHORT).show();
                             }
-
-//                            titleListAll[count] = eventName;
-//                            holderListAll[count] = username;
-//                            dateListAll[count] = strDate;
                         } catch (ParseException pe){
 
                         }
@@ -171,9 +175,11 @@ public class ProfileActivity extends AppCompatActivity{
                             holderListPast.toArray(new String[holderListPast.size()]),
                             dateListPast.toArray(new String[dateListPast.size()]))
                     );
-
+//                    showProgressBar(false);
                 } else {
+//                    showProgressBar(false);
                     Toast.makeText(ProfileActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+
                 }
             }
         });
@@ -300,6 +306,25 @@ public class ProfileActivity extends AppCompatActivity{
         imageFile = file;
         camera_intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
         startActivityForResult(camera_intent, CAM_REQUEST);
+//
+//        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                switch (which){
+//                    case DialogInterface.BUTTON_POSITIVE:
+//                        //Yes button clicked
+//                        break;
+//
+//                    case DialogInterface.BUTTON_NEGATIVE:
+//                        //No button clicked
+//                        break;
+//                }
+//            }
+//        };
+//
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
+//                .setNegativeButton("No", dialogClickListener).show();
     }
 
     private File getFile() {
@@ -319,6 +344,13 @@ public class ProfileActivity extends AppCompatActivity{
             if (resultCode == Activity.RESULT_OK) {
                 imageView.setImageDrawable(Drawable.createFromPath(path));
                 confirmChangeIamge.setVisibility(View.VISIBLE);
+//                Matrix matrix = new Matrix();
+//                matrix.postRotate((float) angle, pivotX, pivotY);
+//                matrix.postRotate(90f, imageView.getDrawable().getBounds().width()/2, imageView.getDrawable().getBounds().height()/2);
+//                imageView.setScaleType(ImageView.ScaleType.MATRIX);
+//                imageView.setImageDrawable(Drawable.createFromPath(path));
+//                imageView.setImageMatrix(matrix);
+
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -361,5 +393,21 @@ public class ProfileActivity extends AppCompatActivity{
             }
         });
 
+    }
+
+    private void showProgressBar(boolean show){
+        if(show) {
+            inAnimation = new AlphaAnimation(0f, 1f);
+            inAnimation.setDuration(500);
+            progressBarHolder.setAnimation(inAnimation);
+            progressBarHolder.setVisibility(View.VISIBLE);
+            entirePage.setVisibility(View.GONE);
+        } else {
+            outAnimation = new AlphaAnimation(1f, 0f);
+            outAnimation.setDuration(200);
+            progressBarHolder.setAnimation(outAnimation);
+            progressBarHolder.setVisibility(View.GONE);
+            entirePage.setVisibility(View.VISIBLE);
+        }
     }
 }

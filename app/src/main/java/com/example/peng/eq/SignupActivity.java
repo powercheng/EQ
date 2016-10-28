@@ -196,7 +196,7 @@ public class SignupActivity extends AppCompatActivity implements LoaderCallbacks
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             //sign up here
-            showProgress(true);
+//            showProgress(true);
             ParseUser user = new ParseUser();
             user.setUsername(email);
             user.setPassword(password);
@@ -211,7 +211,7 @@ public class SignupActivity extends AppCompatActivity implements LoaderCallbacks
                     if (e == null) {
                         // Hooray! Let them use the app now.
                         //go to profile/map screen
-                        showProgress(false);
+//                        showProgress(false);
                         Intent mIntent = new Intent(SignupActivity.this, MapActivity.class);
                         SignupActivity.this.startActivity(mIntent);
                     } else {
@@ -219,7 +219,7 @@ public class SignupActivity extends AppCompatActivity implements LoaderCallbacks
                         // to figure out what went wrong
                        // showDialog(e.toString(), );
                         Dialog.showDialog(e.toString(),"Please try again!",SignupActivity.this);
-                        showProgress(false);
+//                        showProgress(false);
                     }
                 }
             });

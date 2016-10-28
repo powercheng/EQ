@@ -345,7 +345,7 @@ public class EditEventActivity extends AppCompatActivity {
                                 updateEvent(strEventName, strEventAddress, strEventCity,
                                         strEventZip, strEventState,strEventDescription,
                                         streEventMaxAttendee, latitude, longitude, file);
-                                Toast.makeText(EditEventActivity.this, "Event information has been saved.", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(EditEventActivity.this, "Event information has been saved.", Toast.LENGTH_SHORT).show();
                                 //go back to mapscreen
                                 Intent i = new Intent(EditEventActivity.this, MapActivity.class);
                                 startActivity(i);
@@ -578,7 +578,7 @@ public class EditEventActivity extends AppCompatActivity {
                 }
             });
         } else {
-            Toast.makeText(this, "Press Cancel again to cancel event.",
+            Toast.makeText(this, "Press DELETE again to delete the event.",
                     Toast.LENGTH_SHORT).show();
             exit = true;
             new Handler().postDelayed(new Runnable() {
@@ -587,7 +587,6 @@ public class EditEventActivity extends AppCompatActivity {
                     exit = false;
                 }
             }, 3 * 1000);
-
         }
     }
 }

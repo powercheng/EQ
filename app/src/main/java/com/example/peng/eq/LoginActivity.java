@@ -210,7 +210,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            showProgress(true);
+//            showProgress(true);
 
             //log in here
 
@@ -226,7 +226,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         //pop up a failed box.Map
                         // Signup failed. Look at the ParseException to see what happened.
                         showDialog("Invalid username/password","Please try again!");
-                        showProgress(false);
+                        //showProgress(false);
                     }
 
                 }
@@ -441,10 +441,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             ParseUser.requestPasswordResetInBackground(email, new RequestPasswordResetCallback() {
                                 public void done(ParseException e) {
                                     if (e == null) {
-                                        Dialog.showDialog("","Please check your email to reset password.",LoginActivity.this);
+                                        Dialog.showDialog("","check your email to reset password",LoginActivity.this);
                                     } else {
                                         // Something went wrong. Look at the ParseException to see what's up.
-                                        Dialog.showDialog("","This email has not been registered.",LoginActivity.this);
+                                        Dialog.showDialog("","the email didn't register",LoginActivity.this);
                                     }
                                 }
                             });

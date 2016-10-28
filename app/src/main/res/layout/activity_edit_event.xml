@@ -179,7 +179,7 @@
             android:onClick="editEventButtonOnclick"/>
 
         <Button
-            android:text="Cancel"
+            android:text="Delete"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:id="@+id/cancelEventButton"

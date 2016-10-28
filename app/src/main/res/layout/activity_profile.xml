@@ -5,13 +5,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/entire_page"
     >
+    <FrameLayout
+        android:id="@+id/progressBarHolder"
+        android:animateLayoutChanges="true"
+        android:visibility="gone"
+        android:alpha="0.4"
+        android:background="#21aba9a9"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:layout_gravity="center"
+            />
+
+    </FrameLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:background="@drawable/profilebg"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:id="@+id/profile_relatvieView">
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="80dp"
             android:layout_height="80dp"
@@ -53,7 +73,6 @@
 
             android:textColor="@color/white"
             android:layout_centerHorizontal="true"/>
-
     </RelativeLayout>
 
     <TabHost
@@ -99,6 +118,5 @@
             </FrameLayout>
         </LinearLayout>
     </TabHost>
-
 
 </LinearLayout>
