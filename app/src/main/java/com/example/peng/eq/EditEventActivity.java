@@ -8,6 +8,8 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
@@ -506,6 +508,12 @@ public class EditEventActivity extends AppCompatActivity {
         showDialog(DATE_ID);
     }
 
+    public static Bitmap rotateImage(Bitmap source, float angle) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix,
+                true);
+    }
 
     public void changeImage(View view) {
         Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -530,7 +538,10 @@ public class EditEventActivity extends AppCompatActivity {
         String path = "sdcard/camera_app/cam_image.jpg";
         if(requestCode == CAM_REQUEST) {
             if (resultCode == Activity.RESULT_OK) {
-                imageView.setImageDrawable(Drawable.createFromPath(path));
+                Drawable d = Drawable.createFromPath(path);
+                Bitmap imageBitmap= ((BitmapDrawable) d).getBitmap();
+                imageView.setImageBitmap(rotateImage(imageBitmap,90));
+               // imageView.setImageDrawable(Drawable.createFromPath(path));
 //                confirmChangeIamge.setVisibility(View.VISIBLE);
                 imageHasChanged = true;
             }

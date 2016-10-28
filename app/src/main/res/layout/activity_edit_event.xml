@@ -169,18 +169,18 @@
             android:layout_height="wrap_content">
         <Button
             android:text="Save"
-            android:layout_width="150dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:id="@+id/editEventButton"
             android:elevation="0dp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="80dp"
             android:layout_gravity="center"
             android:background="@drawable/mybuttonstyle"
             android:onClick="editEventButtonOnclick"/>
 
         <Button
             android:text="Cancel"
-            android:layout_width="150dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:id="@+id/cancelEventButton"
             android:elevation="0dp"
