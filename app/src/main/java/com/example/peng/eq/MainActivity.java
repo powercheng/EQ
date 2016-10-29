@@ -2,12 +2,14 @@ package com.example.peng.eq;
 
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.SignInAccount;
 import com.parse.Parse;
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, MapActivity.class);
             startActivity(intent);
         }
+
     }
 
     public void login(View view) {
@@ -90,4 +93,11 @@ public class MainActivity extends AppCompatActivity {
     }
     //Cizhen 161008
 **/
+
+    @Override
+    public void onBackPressed() {
+            moveTaskToBack(true);
+
+
+    }
 }

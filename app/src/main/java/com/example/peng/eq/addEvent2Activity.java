@@ -333,21 +333,18 @@ public class addEvent2Activity extends AppCompatActivity {
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             time = "";
             hour_x = hourOfDay;
-            String ampm = "";
 //            String time = "";
             if(hour_x < 12) {
                 time += "0" + hour_x;
-                ampm = "AM";
             }
             else {
                 time += hour_x;
                 hour_x -= 12;
-                ampm = "PM";
             }
             time += ":";
             minute_x = minute;
             if(minute_x == 0) {
-                eventTime.setText(hour_x + " : " + "00" + " " + ampm);
+                eventTime.setText(hour_x + ":" + "00");
                 time += "00";
             }
             else if(minute_x < 10){
@@ -355,7 +352,7 @@ public class addEvent2Activity extends AppCompatActivity {
                 time += "0" + minute_x;
             } else {
                 time += minute_x;
-                eventTime.setText(hour_x + " : " + minute_x + " " + ampm);
+                eventTime.setText(hour_x + ":" + minute_x);
             }
 
             //Toast.makeText(AddEventActivity.this, hour_x + " : " + minute_x, Toast.LENGTH_SHORT).show();

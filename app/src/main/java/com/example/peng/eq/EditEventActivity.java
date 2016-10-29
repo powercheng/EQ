@@ -82,9 +82,9 @@ public class EditEventActivity extends AppCompatActivity {
 
 
         s = (Spinner) findViewById(R.id.spinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, user.type);
-        s.setAdapter(adapter);
+
+
+
 
         //initialize variables and views
         eventId = intent.getStringExtra(DetailInfoActivity.EVENT_ID);
@@ -92,6 +92,11 @@ public class EditEventActivity extends AppCompatActivity {
         city = (EditText) findViewById(R.id.event_city);
         state = (EditText) findViewById(R.id.event_state);
         zip = (EditText) findViewById(R.id.event_zip);
+
+        final Calendar cal = Calendar.getInstance();
+        year_x = cal.get(Calendar.YEAR);
+        month_x = cal.get(Calendar.MONTH);
+        day_x = cal.get(Calendar.DAY_OF_MONTH);
 
         startDate = null;
         imageView = (ImageView) findViewById(R.id.event_image);
@@ -152,6 +157,28 @@ public class EditEventActivity extends AppCompatActivity {
                     String evetName = object.getString("title");
                     EditText et = (EditText) findViewById(R.id.event_name);
                     et.setText(evetName);
+
+                    ParseObject parseobj = object.getParseObject("type");
+                    String str = null;
+                    try {
+                        str = parseobj.fetchIfNeeded().getString("typeName");
+                        for(int i = 0; i < user.type.length; i++) {
+                            if(user.type[i].equals(str)){
+                                String temp = user.type[i];
+                                user.type[i] = user.type[0];
+                                user.type[0] = temp;
+
+                            }
+                        }
+                    } catch (ParseException e1) {
+                        e1.printStackTrace();
+                    }
+
+                    ArrayAdapter<String> adapter;
+
+                    adapter = new ArrayAdapter<String>(EditEventActivity.this,
+                            android.R.layout.simple_spinner_item, user.type);
+                    s.setAdapter(adapter);
 
                     //set date and time
                     Date eventDate = object.getDate("eventDateTime");
@@ -347,8 +374,7 @@ public class EditEventActivity extends AppCompatActivity {
                                         streEventMaxAttendee, latitude, longitude, file);
 //                                Toast.makeText(EditEventActivity.this, "Event information has been saved.", Toast.LENGTH_SHORT).show();
                                 //go back to mapscreen
-                                Intent i = new Intent(EditEventActivity.this, MapActivity.class);
-                                startActivity(i);
+
                             } else {
                                 Toast.makeText(EditEventActivity.this, "Oops, there's an error when saving event information", Toast.LENGTH_SHORT).show();
                             }
@@ -396,6 +422,8 @@ public class EditEventActivity extends AppCompatActivity {
                         public void done(ParseException e) {
                             if(e == null) {
                                 Toast.makeText(EditEventActivity.this, "The event is successfully saved!", Toast.LENGTH_SHORT).show();
+                                Intent i = new Intent(EditEventActivity.this, MapActivity.class);
+                                startActivity(i);
                             } else {
                                 Toast.makeText(EditEventActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
                             }
@@ -454,30 +482,27 @@ public class EditEventActivity extends AppCompatActivity {
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             time = "";
             hour_x = hourOfDay;
-            String ampm = "";
 //            String time = "";
-            if(hour_x < 12) {
+            if(hour_x < 10) {
                 time += "0" + hour_x;
-                ampm = "AM";
             }
             else {
                 time += hour_x;
-                hour_x -= 12;
-                ampm = "PM";
+//                hour_x -= 12;
             }
             time += ":";
             minute_x = minute;
             if(minute_x == 0) {
-                eventTime.setText(hour_x + " : " + "00" + " " + ampm);
+//                eventTime.setText(hour_x + ":" + "00");
                 time += "00";
             }
             else if(minute_x < 10){
-
                 time += "0" + minute_x;
             } else {
                 time += minute_x;
-                eventTime.setText(hour_x + " : " + minute_x + " " + ampm);
+//                eventTime.setText(hour_x + ":" + minute_x);
             }
+            eventTime.setText(time);
         }
     };
 

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -79,6 +80,7 @@ public class ProfileActivity extends AppCompatActivity{
         //initialize variables
         Intent intent = getIntent();
         hostId = ParseUser.getCurrentUser().getObjectId();
+
 
         TabHost host = (TabHost)findViewById(R.id.tabHost);
         host.setup();
@@ -337,12 +339,24 @@ public class ProfileActivity extends AppCompatActivity{
         return image_file;
     }
 
+    public static Bitmap rotateImage(Bitmap source, float angle) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix,
+                true);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         String path = "sdcard/camera_app/cam_image.jpg";
         if(requestCode == CAM_REQUEST) {
             if (resultCode == Activity.RESULT_OK) {
-                imageView.setImageDrawable(Drawable.createFromPath(path));
+                Drawable d = Drawable.createFromPath(path);
+                Bitmap imageBitmap= ((BitmapDrawable) d).getBitmap();
+                imageView.setImageBitmap(rotateImage(imageBitmap,90));
+                // imageView.setImageDrawable(Drawable.createFromPath(path));
+//                confirmChangeIamge.setVisibility(View.VISIBLE);
+                
                 confirmChangeIamge.setVisibility(View.VISIBLE);
 //                Matrix matrix = new Matrix();
 //                matrix.postRotate((float) angle, pivotX, pivotY);

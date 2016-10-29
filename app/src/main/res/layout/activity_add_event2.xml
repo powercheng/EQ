@@ -136,7 +136,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
+        android:inputType="textAutoComplete"
         android:lines="2"
         android:id="@+id/event_description"
         android:imeOptions="actionDone"
